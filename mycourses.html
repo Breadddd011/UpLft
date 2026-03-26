@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../Uplogo.ico">
+  <title>My Courses — UpLift</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/mycourses.css">
+</head>
+<body>
+
+<!-- top nav -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <div class="logo">UpLift</div>
+  </div>
+
+  <div class="nav-search">
+    <span class="search-icon">⌕</span>
+    <input type="text" placeholder="Search courses, topics..." id="searchInput">
+  </div>
+
+  <div class="nav-right">
+
+    <div class="notification-wrapper">
+      <button class="notif-btn" id="notifBtn">
+        🔔
+        <span class="notif-badge" id="notifBadge"></span>
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-head">
+          <span>Notifications</span>
+          <button class="notif-mark-btn" id="markAllRead">Mark all read</button>
+        </div>
+        <div class="notif-list" id="notifList">
+          <div class="notif-empty">No notifications yet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-menu-wrapper">
+      <button class="user-btn" id="userMenuBtn">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-name" id="usernameDisplay">User</span>
+        <span style="font-size:10px; color:var(--text-muted);">▾</span>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <div class="user-dropdown-avatar" id="userDropdownAvatar">?</div>
+          <div>
+            <div class="user-dropdown-name" id="userDropdownName">User</div>
+            <div class="user-dropdown-email" id="userDropdownEmail"></div>
+          </div>
+        </div>
+        <div class="user-dropdown-divider"></div>
+        <a href="profile.html" class="user-dropdown-item">✧ &nbsp;Profile</a>
+        <a href="#" class="user-dropdown-item">✧ &nbsp;Settings</a>
+        <a href="#" class="user-dropdown-item">✧ &nbsp;Help & Support</a>
+        <div class="user-dropdown-divider"></div>
+        <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">🚪 &nbsp;Logout</a>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- layout -->
+<div class="layout">
+
+  <!-- sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-label">Main</div>
+
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">⌂</span>
+        <span class="nav-text">Home</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Learning</div>
+
+      <a href="mycourses.html" class="nav-item active">
+        <span class="nav-icon">✎</span>
+        <span class="nav-text">My Courses</span>
+      </a>
+
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">⏱</span>
+        <span class="nav-text">Deadlines</span>
+      </a>
+
+      <a href="progress.html" class="nav-item">
+        <span class="nav-icon">◎</span>
+        <span class="nav-text">Progress</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Content</div>
+
+      <a href="blog.html" class="nav-item">
+        <span class="nav-icon">✍︎</span>
+        <span class="nav-text">Blogs</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+    </nav>
+  </aside>
+
+  <!-- main -->
+  <main class="main-content" id="mainContent">
+
+    <!-- page header -->
+    <div class="page-header">
+      <div class="breadcrumb">
+        <a href="dashboard.html">Dashboard</a>
+        <span>/</span>
+        <span class="current">My Courses</span>
+      </div>
+      <h1>My Courses</h1>
+      <p>Manage and continue your enrolled courses.</p>
+    </div>
+
+    <!-- filter bar -->
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All</button>
+        <button class="filter-tab" data-filter="active">Active</button>
+        <button class="filter-tab" data-filter="completed">Completed</button>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-outline" onclick="toggleView()">☰ List View</button>
+        <a href="courses2.html" class="btn btn-primary">+ Browse New</a>
+      </div>
+    </div>
+
+    <!-- courses grid -->
+    <div class="courses-grid" id="coursesGrid">
+
+      <!-- course 1 -->
+      <div class="course-card" data-status="active">
+        <div class="course-image" style="background:linear-gradient(135deg,#1a1a2e,#27272a);"></div>
+        <div class="course-content">
+          <div class="course-category">DisMath</div>
+          <div class="course-title">Discrete Mathematics</div>
+          <div class="course-desc">Discrete Mathematics is the branch of math dealing with countable, distinct structures — and it's 
+            the backbone of computer science, underpinning things like algorithms, data structures, cryptography, and complexity theory.</div>
+          <div class="course-meta">
+            <span>⏱ 12h total</span>
+            <span>✎ 20 lessons</span>
+          </div>
+          <div class="course-progress">
+            <div class="progress-header">
+              <span class="progress-label">Progress</span>
+              <span class="progress-value">60%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" style="width:60%"></div>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="#" class="course-btn course-btn-primary">Continue</a>
+            <button class="course-btn course-btn-outline">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- course 2 -->
+      <div class="course-card" data-status="active">
+        <div class="course-image" style="background:linear-gradient(135deg,#0a0a1a,#1a1a2e);"></div>
+        <div class="course-content">
+          <div class="course-category">DSA</div>
+          <div class="course-title">Data Structure and Algorithms</div>
+          <div class="course-desc">DSA is about two things: how data is stored and organized (data structures), and the step-by-step logic used to process and solve problems with it (algorithms). 
+            Together they're fundamental to writing efficient programs.</div>
+          <div class="course-meta">
+            <span>⏱ 24h total</span>
+            <span>✎ 20 lessons</span>
+          </div>
+          <div class="course-progress">
+            <div class="progress-header">
+              <span class="progress-label">Progress</span>
+              <span class="progress-value">35%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" style="width:35%"></div>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="#" class="course-btn course-btn-primary">Continue</a>
+            <button class="course-btn course-btn-outline">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- course 3 -->
+      <div class="course-card" data-status="active">
+        <div class="course-image" style="background:linear-gradient(135deg,#1a0a0a,#2e1a1a);"></div>
+        <div class="course-content">
+          <div class="course-category">DBMS</div>
+          <div class="course-title">Database Management System</div>
+          <div class="course-desc">is software that facilitates the creation, management, 
+            and organization of databases. It acts as an interface between users and the database, ensuring that data is stored securely and can be easily accessed and manipulated.</div>
+          <div class="course-meta">
+            <span>⏱ 18h total</span>
+            <span>✎ 20 lessons</span>
+          </div>
+          <div class="course-progress">
+            <div class="progress-header">
+              <span class="progress-label">Progress</span>
+              <span class="progress-value">80%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" style="width:80%"></div>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="#" class="course-btn course-btn-primary">Continue</a>
+            <button class="course-btn course-btn-outline">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- course 4 -->
+      <div class="course-card" data-status="active">
+        <div class="course-image" style="background:linear-gradient(135deg,#0a1a0a,#1a2e1a);"></div>
+        <div class="course-content">
+          <div class="course-category">Science</div>
+          <div class="course-title">Biology: Cell & Genetics</div>
+          <div class="course-desc">Discover cellular biology, DNA structure, genetics, and heredity principles.</div>
+          <div class="course-meta">
+            <span>⏱ 16h total</span>
+            <span>✎ 20 lessons</span>
+          </div>
+          <div class="course-progress">
+            <div class="progress-header">
+              <span class="progress-label">Progress</span>
+              <span class="progress-value">10%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" style="width:10%"></div>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="#" class="course-btn course-btn-primary">Start</a>
+            <button class="course-btn course-btn-outline">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- course 5 -->
+      <div class="course-card" data-status="completed">
+        <div class="course-image" style="background:linear-gradient(135deg,#1a1a0a,#2a2a1a);"></div>
+        <div class="course-content">
+          <div class="course-category">History</div>
+          <div class="course-title">World History: Foundations</div>
+          <div class="course-desc">Journey through ancient civilizations and the foundations of modern society.</div>
+          <div class="course-meta">
+            <span>⏱ 15h total</span>
+            <span>✎ 15 lessons</span>
+          </div>
+          <div class="course-progress">
+            <div class="progress-header">
+              <span class="progress-label">Progress</span>
+              <span class="progress-value">100%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" style="width:100%"></div>
+            </div>
+          </div>
+          <div class="course-actions">
+            <button class="course-btn course-btn-outline">Review</button>
+            <button class="course-btn course-btn-outline">Certificate</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- courses list (hidden by default) -->
+    <div class="courses-list" id="coursesList">
+
+      <div class="course-list-item" data-status="active">
+        <div class="course-list-icon" style="background:linear-gradient(135deg,#1a1a2e,#27272a);"> ? </div>
+        <div class="course-list-info">
+          <div class="course-list-title">Health Policy 101</div>
+          <div class="course-list-meta">
+            <span>Health</span><span>•</span><span>12 of 20 lessons</span>
+          </div>
+        </div>
+        <div class="course-list-progress">
+          <div class="course-list-bar"><div class="course-list-fill" style="width:60%"></div></div>
+          <div class="course-list-pct">60%</div>
+        </div>
+        <div class="course-list-actions">
+          <button class="course-list-btn">Continue</button>
+        </div>
+      </div>
+
+      <div class="course-list-item" data-status="active">
+        <div class="course-list-icon" style="background:linear-gradient(135deg,#0a0a1a,#1a1a2e);">*</div>
+        <div class="course-list-info">
+          <div class="course-list-title">Advanced Calculus</div>
+          <div class="course-list-meta">
+            <span>Mathematics</span><span>•</span><span>7 of 20 lessons</span>
+          </div>
+        </div>
+        <div class="course-list-progress">
+          <div class="course-list-bar"><div class="course-list-fill" style="width:35%"></div></div>
+          <div class="course-list-pct">35%</div>
+        </div>
+        <div class="course-list-actions">
+          <button class="course-list-btn">Continue</button>
+        </div>
+      </div>
+
+      <div class="course-list-item" data-status="active">
+        <div class="course-list-icon" style="background:linear-gradient(135deg,#1a0a0a,#2e1a1a);">*</div>
+        <div class="course-list-info">
+          <div class="course-list-title">English Literature</div>
+          <div class="course-list-meta">
+            <span>English</span><span>•</span><span>16 of 20 lessons</span>
+          </div>
+        </div>
+        <div class="course-list-progress">
+          <div class="course-list-bar"><div class="course-list-fill" style="width:80%"></div></div>
+          <div class="course-list-pct">80%</div>
+        </div>
+        <div class="course-list-actions">
+          <button class="course-list-btn">Continue</button>
+        </div>
+      </div>
+
+      <div class="course-list-item" data-status="active">
+        <div class="course-list-icon" style="background:linear-gradient(135deg,#0a1a0a,#1a2e1a);">*</div>
+        <div class="course-list-info">
+          <div class="course-list-title">Biology: Cell & Genetics</div>
+          <div class="course-list-meta">
+            <span>Science</span><span>•</span><span>2 of 20 lessons</span>
+          </div>
+        </div>
+        <div class="course-list-progress">
+          <div class="course-list-bar"><div class="course-list-fill" style="width:10%"></div></div>
+          <div class="course-list-pct">10%</div>
+        </div>
+        <div class="course-list-actions">
+          <button class="course-list-btn">Start</button>
+        </div>
+      </div>
+
+      <div class="course-list-item" data-status="completed">
+        <div class="course-list-icon" style="background:linear-gradient(135deg,#1a1a0a,#2a2a1a);">*</div>
+        <div class="course-list-info">
+          <div class="course-list-title">World History: Foundations</div>
+          <div class="course-list-meta">
+            <span>History</span><span>•</span><span>15 of 15 lessons</span>
+          </div>
+        </div>
+        <div class="course-list-progress">
+          <div class="course-list-bar"><div class="course-list-fill" style="width:100%"></div></div>
+          <div class="course-list-pct">100%</div>
+        </div>
+        <div class="course-list-actions">
+          <button class="course-list-btn">Review</button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script src="../js/mycourses.js"></script>
+</body>
+</html>

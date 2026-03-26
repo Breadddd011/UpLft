@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/Uplogo.ico">
+  <title>Profile — UpLift</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body>
+
+<div class="toast-container" id="toastContainer"></div>
+<!-- Confirm dialog -->
+<div class="dialog-overlay" id="deleteDialog">
+  <div class="dialog">
+    <h3>Delete Account</h3>
+    <p>This action is permanent and cannot be undone. All your data, enrollments, and progress will be deleted forever.</p>
+    <div class="dialog-actions">
+      <button class="btn btn-outline" onclick="document.getElementById('deleteDialog').classList.remove('open')">
+        Cancel
+      </button>
+      <button class="btn btn-danger" id="confirmDeleteBtn">
+        <span class="spinner"></span>
+        <span class="btn-text">Yes, delete my account</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Top Nav ── -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <a href="dashboard.html" class="logo">UpLift</a>
+  </div>
+
+  <div class="nav-right">
+
+    <div class="notification-wrapper">
+      <button class="notif-btn" id="notifBtn">
+        🔔
+        <span class="notif-badge" id="notifBadge"></span>
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-head">
+          <span>Notifications</span>
+          <button class="notif-mark-btn" id="markAllRead">Mark all read</button>
+        </div>
+        <div class="notif-list" id="notifList">
+          <div class="notif-empty">No notifications yet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-menu-wrapper">
+      <button class="user-btn" id="userMenuBtn">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-name" id="usernameDisplay">User</span>
+        <span style="font-size:10px; color:var(--text-muted);">▾</span>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <div class="user-dropdown-avatar" id="userDropdownAvatar">?</div>
+          <div>
+            <div class="user-dropdown-name" id="userDropdownName">User</div>
+            <div class="user-dropdown-email" id="userDropdownEmail"></div>
+          </div>
+        </div>
+        <div class="user-dropdown-divider"></div>
+        <a href="profile.html" class="user-dropdown-item active-page">👤 &nbsp;Profile</a>
+        <a href="#" class="user-dropdown-item">⚙️ &nbsp;Settings</a>
+        <a href="#" class="user-dropdown-item">💬 &nbsp;Help & Support</a>
+        <div class="user-dropdown-divider"></div>
+        <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">🚪 &nbsp;Logout</a>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ── Layout ── -->
+<div class="layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-label">Main</div>
+
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">⌂</span>
+        <span class="nav-text">Home</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Learning</div>
+
+      <a href="mycourses.html" class="nav-item">
+        <span class="nav-icon">✎</span>
+        <span class="nav-text">My Courses</span>
+      </a>
+
+      <a href="deadlines.html" class="nav-item">
+        <span class="nav-icon">⏱</span>
+        <span class="nav-text">Deadlines</span>
+      </a>
+
+      <a href="progress.html" class="nav-item">
+        <span class="nav-icon">◎</span>
+        <span class="nav-text">Progress</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Content</div>
+
+      <a href="blog.html" class="nav-item">
+        <span class="nav-icon">✍︎</span>
+        <span class="nav-text">Blogs</span>
+      </a>
+      
+    </nav>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <main class="main-content" id="mainContent">
+
+    <div class="page-header">
+      <h1>Profile</h1>
+      <p>Manage your personal information and account settings.</p>
+    </div>
+
+    <div class="profile-grid">
+
+      <!-- left avatar card-->
+      <div class="card avatar-card">
+        <div class="avatar-section">
+          <div class="avatar-ring">
+            <div class="profile-avatar" id="profileAvatar">?</div>
+            <label class="avatar-upload-btn" for="avatarInput" title="Upload photo">✎</label>
+            <input type="file" id="avatarInput" accept="image/*">
+          </div>
+          <div class="profile-name" id="profileName">Loading...</div>
+          <div class="profile-email" id="profileEmail"></div>
+          <div class="profile-badge">⬤ &nbsp;Student</div>
+          <div class="avatar-divider"></div>
+          <div class="mini-stats">
+            <div class="mini-stat">
+              <div class="mini-stat-num">5</div>
+              <div class="mini-stat-label">Courses</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-num">12</div>
+              <div class="mini-stat-label">Done</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-num">7</div>
+              <div class="mini-stat-label">Streak</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right column -->
+      <div class="right-col">
+
+        <!-- personal info -->
+        <div class="card">
+          <div class="card-head">
+            <h2>Personal Information</h2>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Display Name</label>
+                <input class="form-input" type="text" id="fieldUsername" placeholder="Your name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input class="form-input" type="email" id="fieldEmail" placeholder="your@email.com" disabled>
+                <span class="form-hint">Email cannot be changed</span>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Bio</label>
+                <input class="form-input" type="text" id="fieldBio" placeholder="Tell us a little about yourself...">
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+              <button class="btn btn-primary" id="saveProfileBtn" onclick="saveProfile()">
+                <span class="spinner"></span>
+                <span class="btn-text">Save Changes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- change password -->
+        <div class="card password-card">
+          <div class="card-head">
+            <h2>Change Password</h2>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">New Password</label>
+                <input class="form-input" type="password" id="fieldNewPassword" placeholder="Min 6 characters">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input class="form-input" type="password" id="fieldConfirmPassword" placeholder="Repeat password">
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+              <button class="btn btn-outline" id="changePassBtn" onclick="changePassword()">
+                <span class="spinner"></span>
+                <span class="btn-text">Update Password</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger zone -->
+        <div class="card danger-card">
+          <div class="card-head">
+            <h2 style="color:var(--error);">Danger Zone</h2>
+          </div>
+          <div class="card-body">
+            <div class="danger-zone-inner">
+              <div class="danger-desc">
+                <h3>Delete Account</h3>
+                <p>Permanently delete your account and all associated data. This cannot be undone.</p>
+              </div>
+              <button class="btn btn-danger btn-sm" onclick="document.getElementById('deleteDialog').classList.add('open')">
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="../js/profile.js"></script>
+</body>
+</html>

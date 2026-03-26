@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/Uplogo.ico">
+  <title>Dashboard — UpLift</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <div class="logo">UpLift</div>
+  </div>
+
+  <div class="nav-right">
+
+    <div class="notification-wrapper">
+      <button class="notif-btn" id="notifBtn">
+        🔔
+        <span class="notif-badge" id="notifBadge"></span>
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-head">
+          <span>Notifications</span>
+          <button class="notif-mark-btn" id="markAllRead">Mark all read</button>
+        </div>
+        <div class="notif-list" id="notifList">
+          <div class="notif-empty">No notifications yet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-menu-wrapper">
+      <button class="user-btn" id="userMenuBtn">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-name" id="usernameDisplay">User</span>
+        <span style="font-size:10px; color:var(--text-muted);">▾</span>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <div class="user-dropdown-avatar" id="userDropdownAvatar">?</div>
+          <div>
+            <div class="user-dropdown-name" id="userDropdownName">User</div>
+            <div class="user-dropdown-email" id="userDropdownEmail"></div>
+          </div>
+        </div>
+        <div class="user-dropdown-divider"></div>
+        <a href="profile.html" class="user-dropdown-item">✧ &nbsp;Profile</a>
+        <a href="#" class="user-dropdown-item">✧ &nbsp;Settings</a>
+        <a href="#" class="user-dropdown-item">✧ &nbsp;Help & Support</a>
+        <div class="user-dropdown-divider"></div>
+        <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">🚪 &nbsp;Logout</a>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- layout -->
+<div class="layout">
+
+  <!-- sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-label">Main</div>
+
+      <a href="dashboard.html" class="nav-item active">
+        <span class="nav-icon">⌂</span>
+        <span class="nav-text">Home</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Learning</div>
+
+      <a href="mycourses.html" class="nav-item">
+        <span class="nav-icon">✎</span>
+        <span class="nav-text">My courses</span>
+      </a>
+
+      <a href="#deadlines" class="nav-item" onclick="smoothScroll('deadlines',event)">
+        <span class="nav-icon">⏱</span>
+        <span class="nav-text">Deadlines</span>
+      </a>
+
+      <a href="progress.html" class="nav-item">
+        <span class="nav-icon">◎</span>
+        <span class="nav-text">Progress</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Content</div>
+
+      <a href="blog.html" class="nav-item">
+        <span class="nav-icon">✍︎</span>
+        <span class="nav-text">Blogs</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+    </nav>
+  </aside>
+
+  <!-- main -->
+  <main class="main-content" id="mainContent">
+
+    <!-- welcome -->
+    <div class="welcome-banner">
+      <div class="welcome-text">
+        <h1 id="welcomeTitle">Welcome back! ( ˶ˆᗜˆ˵ )</h1>
+        <p>Here's what's happening with your learning today.</p>
+      </div>
+      <div class="welcome-actions">
+        <a href="courses2.html" class="btn btn-outline">Browse Courses</a>
+        <a href="courses2.html" class="btn btn-primary">Continue Learning →</a>
+      </div>
+    </div>
+
+    <!-- stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Courses</span>
+          <span class="stat-icon">✎</span>
+        </div>
+        <div class="stat-number">5</div>
+        <div class="stat-change up">+2 new this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Completed</span>
+          <span class="stat-icon">✔</span>
+        </div>
+        <div class="stat-number">12</div>
+        <div class="stat-change up">+3 this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Study Hours</span>
+          <span class="stat-icon">⏱</span>
+        </div>
+        <div class="stat-number">24</div>
+        <div class="stat-change up">+4h this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Streak</span>
+          <span class="stat-icon">🔥</span>
+        </div>
+        <div class="stat-number">7</div>
+        <div class="stat-change">days in a row</div>
+      </div>
+    </div>
+
+    <!-- content grid -->
+    <div class="content-grid">
+
+      <!-- mycourses -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>My Courses</h2>
+          <a href="mycourses.html" class="section-link">View all →</a>
+        </div>
+        <div class="courses-list">
+          <div class="course-row" onclick="window.location.href='courses2.html'">
+            <div class="course-thumb" style="background:linear-gradient(135deg,#1a1a2e,#27272a)">🏥</div>
+            <div class="course-info">
+              <div class="course-name">Health Policy 101</div>
+              <div class="course-sub">Health</div>
+            </div>
+            <div class="course-progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+              <div class="progress-pct">60%</div>
+            </div>
+            <button class="course-continue-btn">Continue</button>
+          </div>
+          <div class="course-row" onclick="window.location.href='courses2.html'">
+            <div class="course-thumb" style="background:linear-gradient(135deg,#0a0a1a,#1a1a2e)">📐</div>
+            <div class="course-info">
+              <div class="course-name">Advanced Calculus</div>
+              <div class="course-sub">Mathematics</div>
+            </div>
+            <div class="course-progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:35%"></div></div>
+              <div class="progress-pct">35%</div>
+            </div>
+            <button class="course-continue-btn">Continue</button>
+          </div>
+          <div class="course-row" onclick="window.location.href='courses2.html'">
+            <div class="course-thumb" style="background:linear-gradient(135deg,#1a0a0a,#2e1a1a)">📖</div>
+            <div class="course-info">
+              <div class="course-name">English Literature</div>
+              <div class="course-sub">English</div>
+            </div>
+            <div class="course-progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+              <div class="progress-pct">80%</div>
+            </div>
+            <button class="course-continue-btn">Continue</button>
+          </div>
+          <div class="course-row" onclick="window.location.href='courses2.html'">
+            <div class="course-thumb" style="background:linear-gradient(135deg,#0a1a0a,#1a2e1a)">🧬</div>
+            <div class="course-info">
+              <div class="course-name">Biology: Cell & Genetics</div>
+              <div class="course-sub">Science</div>
+            </div>
+            <div class="course-progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+              <div class="progress-pct">10%</div>
+            </div>
+            <button class="course-continue-btn">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- deadlines -->
+      <div class="section-card" id="deadlines">
+        <div class="section-head">
+          <h2>Upcoming Deadlines</h2>
+        </div>
+        <div class="deadlines-list">
+          <div class="deadline-row">
+            <div class="deadline-date">
+              <div class="deadline-day">26</div>
+              <div class="deadline-month">Jan</div>
+            </div>
+            <div class="deadline-info">
+              <div class="deadline-title">Policy Presentation</div>
+              <div class="deadline-desc">Submit slides by midnight</div>
+            </div>
+            <span class="deadline-tag urgent">Urgent</span>
+          </div>
+          <div class="deadline-row">
+            <div class="deadline-date">
+              <div class="deadline-day">02</div>
+              <div class="deadline-month">Feb</div>
+            </div>
+            <div class="deadline-info">
+              <div class="deadline-title">Calculus Problem Set</div>
+              <div class="deadline-desc">Chapter 5 — 20 problems</div>
+            </div>
+            <span class="deadline-tag soon">Soon</span>
+          </div>
+          <div class="deadline-row">
+            <div class="deadline-date">
+              <div class="deadline-day">10</div>
+              <div class="deadline-month">Feb</div>
+            </div>
+            <div class="deadline-info">
+              <div class="deadline-title">Literature Essay</div>
+              <div class="deadline-desc">Shakespeare analysis, 1500 words</div>
+            </div>
+            <span class="deadline-tag normal">Upcoming</span>
+          </div>
+          <div class="deadline-row">
+            <div class="deadline-date">
+              <div class="deadline-day">18</div>
+              <div class="deadline-month">Feb</div>
+            </div>
+            <div class="deadline-info">
+              <div class="deadline-title">Biology Lab Report</div>
+              <div class="deadline-desc">Microscopy observations</div>
+            </div>
+            <span class="deadline-tag normal">Upcoming</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- bottom grid -->
+    <div class="bottom-grid" id="progress">
+
+      <!-- recent activity -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>Recent Activity</h2>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-dot green"></div>
+            <div class="activity-text">
+              Completed lesson <strong>Policy Analysis Methods</strong> in Health Policy 101
+            </div>
+            <div class="activity-time">2h ago</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot blue"></div>
+            <div class="activity-text">
+              Started <strong>Advanced Calculus</strong> — Limits and Continuity
+            </div>
+            <div class="activity-time">Yesterday</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot yellow"></div>
+            <div class="activity-text">
+              Deadline reminder: <strong>Policy Presentation</strong> due in 3 days
+            </div>
+            <div class="activity-time">Yesterday</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot green"></div>
+            <div class="activity-text">
+              Completed <strong>Shakespeare Deep Dive</strong> in English Literature
+            </div>
+            <div class="activity-time">2 days ago</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot white"></div>
+            <div class="activity-text">
+              Enrolled in <strong>Biology: Cell & Genetics</strong>
+            </div>
+            <div class="activity-time">3 days ago</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- subject progress -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>Subject Progress</h2>
+        </div>
+        <div class="subjects-list">
+          <div>
+            <div class="subject-top">
+              <span class="subject-name">English</span>
+              <span class="subject-pct">80%</span>
+            </div>
+            <div class="subject-bar">
+              <div class="subject-fill" style="width:80%; background:#d4d4d8;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="subject-top">
+              <span class="subject-name">Health</span>
+              <span class="subject-pct">60%</span>
+            </div>
+            <div class="subject-bar">
+              <div class="subject-fill" style="width:60%; background:#a1a1aa;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="subject-top">
+              <span class="subject-name">Mathematics</span>
+              <span class="subject-pct">35%</span>
+            </div>
+            <div class="subject-bar">
+              <div class="subject-fill" style="width:35%; background:#71717a;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="subject-top">
+              <span class="subject-name">Science</span>
+              <span class="subject-pct">10%</span>
+            </div>
+            <div class="subject-bar">
+              <div class="subject-fill" style="width:10%; background:#52525b;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="subject-top">
+              <span class="subject-name">History</span>
+              <span class="subject-pct">0%</span>
+            </div>
+            <div class="subject-bar">
+              <div class="subject-fill" style="width:0%; background:#3f3f46;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script src="../js/dashboard.js"></script>
+</body>
+</html>
