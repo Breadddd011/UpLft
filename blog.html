@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/Uplogo.ico">
+  <title>Blog & Resources — UpLift</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/blog.css">
+</head>
+<body>
+
+<!-- yung article -->
+<div class="modal-overlay" id="articleModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>How to Study Without Getting Burnout?</h2>
+      <button class="modal-close-btn" onclick="hideArticleModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="article-text">
+        Everyone talks about studying harder. But the real secret is studying <strong>smarter</strong> — without burning out.
+      </p>
+
+      <div class="article-section-title">1. The 80/20 Rule for Studying</div>
+      <p class="article-text">Focus on the 20% of topics that give you 80% of your results. Identify high-yield concepts first and spend the majority of your time mastering them before moving to secondary material.</p>
+
+      <div class="article-section-title">2. Active Recall + Spaced Repetition</div>
+      <p class="article-text">Don't just re-read notes. Test yourself daily and review at increasing intervals — your brain consolidates memory far more effectively when it has to retrieve information under mild difficulty.</p>
+
+      <div class="article-section-title">3. The 50/10 Rule (Better than Pomodoro)</div>
+      <p class="article-text">Study intensely for 50 minutes, then take a full 10-minute break. Walk, hydrate, no screens. This rhythm sustains deep focus across multiple sessions without the mental fatigue that kills productivity.</p>
+
+      <div class="article-section-title">4. Body First, Brain Second</div>
+      <p class="article-text">Sleep 7–9 hours. Exercise 3×/week. Eat protein and healthy fats before studying. Cognitive performance is directly downstream of physical wellbeing — neglect your body and your brain will underperform no matter how disciplined you are.</p>
+
+      <div class="article-section-title">5. Weekly Reset Ritual</div>
+      <p class="article-text">Every Sunday, plan your week and ruthlessly delete unnecessary tasks. Protect your energy like a finite resource, because it is. Saying no to low-value commitments is just as important as studying itself.</p>
+
+      <div class="article-quote">
+        "Burnout isn't a badge of honor. Sustainable studying is the real flex."
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="hideArticleModal()">Close</button>
+      <a href="https://www.youtube.com/results?search_query=how+to+study+without+burnout"
+         target="_blank" class="btn btn-primary">▶ &nbsp;Watch Related Videos</a>
+    </div>
+  </div>
+</div>
+
+<!-- top -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <div class="logo">UpLift</div>
+  </div>
+  <div class="nav-right">
+    <div class="notification-wrapper">
+      <button class="notif-btn" id="notifBtn">🔔
+        <span class="notif-badge" id="notifBadge"></span>
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-head">
+          <span>Notifications</span>
+          <button class="notif-mark-btn" id="markAllRead">Mark all read</button>
+        </div>
+        <div class="notif-list" id="notifList">
+          <div class="notif-empty">No notifications yet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-menu-wrapper">
+      <button class="user-btn" id="userMenuBtn">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-name" id="usernameDisplay">User</span>
+        <span style="font-size:10px; color:var(--text-muted);">▾</span>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <div class="user-dropdown-avatar" id="userDropdownAvatar">?</div>
+          <div>
+            <div class="user-dropdown-name" id="userDropdownName">User</div>
+            <div class="user-dropdown-email" id="userDropdownEmail"></div>
+          </div>
+        </div>
+        <div class="user-dropdown-divider"></div>
+        <a href="profile.html" class="user-dropdown-item">☻ &nbsp;Profile</a>
+        <a href="#" class="user-dropdown-item">🌣 &nbsp;Settings</a>
+        <a href="#" class="user-dropdown-item">🛠 &nbsp;Help & Support</a>
+        <div class="user-dropdown-divider"></div>
+        <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">➜] &nbsp;Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- layout -->
+<div class="layout">
+
+  <!-- side -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+      <div class="sidebar-label">Main</div>
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">⌂</span><span class="nav-text">Home</span>
+      </a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Learning</div>
+      <a href="mycourses.html" class="nav-item">
+        <span class="nav-icon">✎</span><span class="nav-text">My Courses</span>
+      </a>
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">⏱</span><span class="nav-text">Deadlines</span>
+      </a>
+      <a href="progress.html" class="nav-item">
+        <span class="nav-icon">◎</span><span class="nav-text">Progress</span>
+      </a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Content</div>
+      <a href="blog.html" class="nav-item active">
+        <span class="nav-icon">✍︎</span><span class="nav-text">Blogs</span>
+      </a>
+      <div class="sidebar-divider"></div>
+    </nav>
+  </aside>
+
+  <!-- main-->
+  <main class="main-content" id="mainContent">
+
+    <!-- page header -->
+    <div class="page-header">
+      <div class="breadcrumb">
+        <a href="dashboard.html">Dashboard</a>
+        <span>/</span>
+        <span class="current">Blog &amp; Resources</span>
+      </div>
+      <h1>Blog &amp; Resources</h1>
+      <p>Study tips, explainers, exam prep, guides &amp; curated videos.</p>
+    </div>
+
+    <!-- article banner -->
+    <div class="featured-banner">
+      <div class="featured-left">
+        <div class="featured-left-deco top-right">😭</div>
+        <div class="featured-left-deco bottom-left">🧠</div>
+        <div class="featured-left-icon">❔</div>
+        <div class="featured-left-label">Article</div>
+        <div class="featured-left-title">How to Study Without Getting Burnout?</div>
+      </div>
+      <div class="featured-right">
+        <div class="featured-meta">
+          <span class="featured-tag">Study Tip</span>
+          <span class="featured-date">By UpLift · March 28, 2026</span>
+        </div>
+        <div class="featured-title">How to Study Without Getting Burnout?</div>
+        <div class="featured-desc">
+          Stop pulling all-nighters. These science-backed habits help you study smarter,
+          not longer. Learn how to maintain focus, energy, and motivation while avoiding exhaustion.
+        </div>
+        <div class="featured-footer">
+          <button class="btn btn-primary" onclick="showArticleModal()">Read Full Article →</button>
+          <div class="featured-read-badge">
+            <div class="live-dot"></div>
+            8 min read · Science-backed
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tab bar -->
+    <div class="tab-bar" id="tabBar">
+    </div>
+
+    <!-- section heading -->
+    <div class="section-heading">
+      <h2 id="sectionTitle">Latest Videos</h2>
+      <span id="resultCount"></span>
+    </div>
+
+    <!-- videos Grid -->
+    <div class="videos-grid" id="videosGrid">
+      <!-- rendered by .js 👇🏻 -->
+    </div>
+
+  </main>
+</div>
+
+<script src="../js/blog.js"></script>
+</body>
+</html>
