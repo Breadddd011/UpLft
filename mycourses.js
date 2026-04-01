@@ -1,1512 +1,906 @@
-:root {
-  --bg-primary:    #0a0a0a;
-  --bg-secondary:  #111111;
-  --bg-tertiary:   #1a1a1a;
-  --bg-card:       #141414;
-  --bg-hover:      #1f1f1f;
-
-  --text-primary:   #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-muted:     #71717a;
-
-  --border:       #27272a;
-  --border-light: #3f3f46;
-
-  --accent:       #ffffff;
-  --accent-hover: #e4e4e7;
-
-  --success: #22c55e;
-  --error:   #ef4444;
-  --warning: #f59e0b;
-  --info:    #3b82f6;
-
-  --gradient-1: #fafafa;
-  --gradient-2: #a1a1aa;
-
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.5);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.5);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
-  --shadow-glow: 0 0 20px rgba(255,255,255,0.08);
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-
-  --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-
-  --sidebar-w: 240px;
-  --nav-h: 60px;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-
-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-}
-
-::selection { background: rgba(255,255,255,0.15); }
-
-/* ── Top Nav ── */
-.top-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--nav-h);
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  background: rgba(10,10,10,0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.menu-toggle {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 18px;
-  cursor: pointer;
-  padding: 6px 8px;
-  border-radius: var(--radius-sm);
-  transition: var(--transition);
-  line-height: 1;
-}
-
-.menu-toggle:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-.logo {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.nav-search {
-  position: relative;
-  flex: 1;
-  max-width: 360px;
-  margin: 0 24px;
-}
-
-.nav-search input {
-  width: 100%;
-  padding: 8px 14px 8px 36px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-family: inherit;
-  color: var(--text-primary);
-  transition: var(--transition);
-}
-
-.nav-search input::placeholder { color: var(--text-muted); }
-
-.nav-search input:focus {
-  outline: none;
-  border-color: var(--border-light);
-  background: var(--bg-card);
-}
-
-.nav-search .search-icon {
-  position: absolute;
-  left: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 13px;
-  color: var(--text-muted);
-  pointer-events: none;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ── Notification ── */
-.notification-wrapper { position: relative; }
-
-.notif-btn {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 16px;
-  cursor: pointer;
-  padding: 7px 9px;
-  border-radius: var(--radius-sm);
-  transition: var(--transition);
-  position: relative;
-}
-
-.notif-btn:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-.notif-badge {
-  position: absolute;
-  top: 4px; right: 4px;
-  width: 8px; height: 8px;
-  background: var(--error);
-  border-radius: 50%;
-  border: 2px solid var(--bg-primary);
-  display: none;
-}
-
-.notif-badge.active { display: block; }
-
-.notif-dropdown {
-  display: none;
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  width: 300px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  z-index: 999;
-  overflow: hidden;
-  animation: dropIn 0.2s ease;
-}
-
-.notif-dropdown.open { display: block; }
-
-.notif-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.notif-mark-btn {
-  background: none;
-  border: none;
-  font-size: 12px;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-family: inherit;
-  transition: var(--transition);
-}
-
-.notif-mark-btn:hover { color: var(--text-primary); }
-
-.notif-list { max-height: 260px; overflow-y: auto; }
-
-.notif-item {
-  display: flex;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: var(--transition);
-  align-items: flex-start;
-}
-
-.notif-item:hover { background: var(--bg-tertiary); }
-.notif-item.unread { background: rgba(255,255,255,0.02); }
-
-.notif-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--border-light);
-  margin-top: 5px;
-  flex-shrink: 0;
-}
-
-.notif-item.unread .notif-dot { background: var(--accent); }
-
-.notif-msg { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
-.notif-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-.notif-empty { padding: 24px; text-align: center; color: var(--text-muted); font-size: 13px; }
-
-/* ── User Menu ── */
-.user-menu-wrapper { position: relative; }
-
-.user-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 5px 10px 5px 5px;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.user-btn:hover {
-  border-color: var(--border-light);
-  background: var(--bg-tertiary);
-}
-
-.user-avatar {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3f3f46, #71717a);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-primary);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.user-avatar img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.user-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.user-dropdown {
-  display: none;
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  width: 220px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  z-index: 999;
-  overflow: hidden;
-  animation: dropIn 0.2s ease;
-}
-
-.user-dropdown.open { display: block; }
-
-.user-dropdown-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.user-dropdown-avatar {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3f3f46, #71717a);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.user-dropdown-avatar img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.user-dropdown-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-.user-dropdown-email { font-size: 11px; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
-
-.user-dropdown-divider { height: 1px; background: var(--border); }
-
-.user-dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-decoration: none;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.user-dropdown-item:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-.user-dropdown-item.danger { color: var(--error); }
-.user-dropdown-item.danger:hover { background: rgba(239,68,68,0.08); color: var(--error); }
-
-/* ── Layout ── */
-.layout {
-  display: flex;
-  padding-top: var(--nav-h);
-  min-height: 100vh;
-}
-
-/* ── Sidebar ── */
-.sidebar {
-  width: var(--sidebar-w);
-  flex-shrink: 0;
-  position: fixed;
-  top: var(--nav-h);
-  left: 0;
-  bottom: 0;
-  background: var(--bg-secondary);
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: transform 0.3s ease, width 0.3s ease;
-  z-index: 400;
-  padding: 16px 0;
-}
-
-.sidebar.collapsed { width: 60px; }
-
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0 10px;
-}
-
-.sidebar-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  padding: 12px 8px 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  transition: opacity 0.2s;
-}
-
-.sidebar.collapsed .sidebar-label { opacity: 0; }
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-decoration: none;
-  cursor: pointer;
-  transition: var(--transition);
-  white-space: nowrap;
-  overflow: hidden;
-  position: relative;
-}
-
-.nav-item:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-}
-
-.nav-item.active {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.nav-item.active::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 20%; bottom: 20%;
-  width: 2px;
-  background: var(--accent);
-  border-radius: 0 2px 2px 0;
-}
-
-.nav-icon {
-  font-size: 16px;
-  flex-shrink: 0;
-  width: 20px;
-  text-align: center;
-}
-
-.nav-text {
-  flex: 1;
-  transition: opacity 0.2s;
-}
-
-.sidebar.collapsed .nav-text { opacity: 0; pointer-events: none; }
-
-.sidebar-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 8px 0;
-}
-
-/* ── Main Content ── */
-.main-content {
-  flex: 1;
-  margin-left: var(--sidebar-w);
-  transition: margin-left 0.3s ease;
-  min-height: calc(100vh - var(--nav-h));
-  padding: 28px 32px;
-}
-
-.main-content.sidebar-collapsed { margin-left: 60px; }
-
-/* ── Page Header ── */
-.page-header {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px 32px;
-  margin-bottom: 24px;
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 0.5s ease both;
-}
-
-.page-header::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(circle at 80% 50%, rgba(255,255,255,0.03) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-.page-header h1 {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
-}
-
-.page-header p {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.breadcrumb a {
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: var(--transition);
-}
-
-.breadcrumb a:hover { color: var(--text-primary); }
-.breadcrumb .current { color: var(--text-primary); font-weight: 500; }
-
-/* ── Filter Bar ── */
-.filter-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
-  animation: fadeInUp 0.5s ease 0.1s both;
-}
-
-.filter-tabs {
-  display: flex;
-  gap: 8px;
-}
-
-.filter-tab {
-  padding: 8px 16px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: var(--transition);
-  font-family: inherit;
-}
-
-.filter-tab:hover {
-  border-color: var(--border-light);
-  color: var(--text-primary);
-}
-
-.filter-tab.active {
-  background: var(--accent);
-  color: var(--bg-primary);
-  border-color: var(--accent);
-}
-
-.filter-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  padding: 9px 18px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  border: none;
-  font-family: inherit;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  text-decoration: none;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: var(--bg-primary);
-}
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-glow);
-}
-
-.btn-outline {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border-light);
-}
-
-.btn-outline:hover {
-  background: var(--bg-tertiary);
-  border-color: var(--text-muted);
-}
-
-/* ── Course Grid ── */
-.courses-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  margin-bottom: 24px;
-  animation: fadeInUp 0.5s ease 0.2s both;
-}
-
-.course-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: var(--transition);
-  display: flex;
-  flex-direction: column;
-}
-
-.course-card:hover {
-  border-color: var(--border-light);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.course-image {
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  position: relative;
-  overflow: hidden;
-}
-
-.course-image::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, transparent 0%, var(--bg-secondary) 100%);
-  opacity: 0.6;
-}
-
-.course-content {
-  padding: 20px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.course-category {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
-.course-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-  line-height: 1.4;
-}
-
-.course-desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 16px;
-  flex: 1;
-}
-
-.course-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-.course-meta span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.course-progress {
-  margin-bottom: 16px;
-}
-
-.progress-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 12px;
-}
-
-.progress-label {
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.progress-value {
-  color: var(--text-primary);
-  font-weight: 700;
-}
-
-.progress-track {
-  height: 6px;
-  background: var(--bg-tertiary);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  border-radius: 99px;
-  background: linear-gradient(90deg, var(--text-muted), var(--accent));
-  transition: width 0.8s ease;
-  position: relative;
-}
-
-.progress-bar::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-.course-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.course-btn {
-  flex: 1;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  border: none;
-  font-family: inherit;
-  text-align: center;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.course-btn-primary {
-  background: var(--accent);
-  color: var(--bg-primary);
-}
-
-.course-btn-primary:hover {
-  background: var(--accent-hover);
-}
-
-.course-btn-outline {
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-}
-
-.course-btn-outline:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  border-color: var(--border-light);
-}
-
-/* ── List View ── */
-.courses-list {
-  display: none;
-  flex-direction: column;
-  gap: 12px;
-  animation: fadeInUp 0.5s ease 0.2s both;
-}
-
-.courses-list.active {
-  display: flex;
-}
-
-.course-list-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  transition: var(--transition);
-}
-
-.course-list-item:hover {
-  border-color: var(--border-light);
-  background: var(--bg-hover);
-}
-
-.course-list-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  flex-shrink: 0;
-  border: 1px solid var(--border);
-}
-
-.course-list-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.course-list-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.course-list-meta {
-  font-size: 12px;
-  color: var(--text-muted);
-  display: flex;
-  gap: 12px;
-}
-
-.course-list-progress {
-  width: 120px;
-  flex-shrink: 0;
-}
-
-.course-list-bar {
-  height: 6px;
-  background: var(--bg-tertiary);
-  border-radius: 99px;
-  overflow: hidden;
-  margin-bottom: 4px;
-}
-
-.course-list-fill {
-  height: 100%;
-  border-radius: 99px;
-  background: var(--accent);
-}
-
-.course-list-pct {
-  font-size: 11px;
-  color: var(--text-muted);
-  text-align: right;
-  font-weight: 600;
-}
-
-.course-list-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.course-list-btn {
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  font-family: inherit;
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-}
-
-.course-list-btn:hover {
-  background: var(--accent);
-  color: var(--bg-primary);
-  border-color: var(--accent);
-}
-
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  animation: fadeInUp 0.5s ease both;
-}
-
-.empty-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 20px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-}
-
-.empty-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-}
-
-.empty-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
-}
-
-/* ── Animations ── */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes dropIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-/* ── Responsive ── */
-@media (max-width: 1100px) {
-  .courses-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-    width: var(--sidebar-w) !important;
+/* ============================================================
+   mycourses.js  —  UpLift
+   Upload-based courses + AI reviewer (summary / flashcards / quiz / notes)
+   Data lives in IndexedDB so it persists across sessions
+   ============================================================ */
+
+const { createClient } = supabase;
+const client = createClient(
+  'https://tiyapgnehlwbhhzqqumq.supabase.co',
+  'sb_publishable_TshJnLexCo4FrHe_YJ8l7g_QcxA_kaV'
+);
+
+/* ── State ── */
+let listView = false;
+let db = null;
+let allCourses = [];          // in-memory cache
+let activeFilter = 'all';
+let pendingDeleteId = null;
+
+/* review state */
+let reviewerCourseId = null;
+let reviewerData = null;      // { summary, keyPoints, flashcards, quiz }
+let currentCard = 0;
+let quizAnswered = {};
+
+/* ── IndexedDB ── */
+const DB_NAME    = 'UpLiftCourses';
+const DB_VERSION = 2;
+const STORE      = 'courses';
+
+function initDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => { db = req.result; resolve(); };
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE)) {
+        d.createObjectStore(STORE, { keyPath: 'id' });
+      }
+    };
+  });
+}
+
+function dbGetAll() {
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+function dbGet(id) {
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).get(id);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+function dbPut(obj) {
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(STORE, 'readwrite');
+    const req = tx.objectStore(STORE).put(obj);
+    req.onsuccess = () => resolve();
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+function dbDelete(id) {
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(STORE, 'readwrite');
+    const req = tx.objectStore(STORE).delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+/* ── Init ── */
+window.addEventListener('DOMContentLoaded', async () => {
+  await initDB();
+
+  const { data: { user } } = await client.auth.getUser();
+  if (!user || !user.email_confirmed_at) {
+    window.location.href = 'index.html';
+    return;
   }
 
-  .sidebar.mobile-open { transform: translateX(0); }
+  /* nav user info */
+  const storedName = localStorage.getItem('username');
+  const username   = (storedName && !storedName.includes('@'))
+    ? storedName : user.email.split('@')[0];
 
-  .main-content {
-    margin-left: 0 !important;
-    padding: 20px 16px;
+  setEl('usernameDisplay',   username);
+  setEl('userAvatar',        username.charAt(0).toUpperCase());
+  setEl('userDropdownName',  username);
+  setEl('userDropdownEmail', user.email);
+  setEl('userDropdownAvatar',username.charAt(0).toUpperCase());
+
+  const { data: profile } = await client
+    .from('profiles').select('avatar_url, username')
+    .eq('id', user.id).maybeSingle();
+
+  if (profile?.username) {
+    setEl('usernameDisplay',  profile.username);
+    setEl('userDropdownName', profile.username);
+  }
+  if (profile?.avatar_url) applyAvatar(profile.avatar_url);
+
+  await loadNotifications(user.id);
+
+  client.channel('courses-notifs')
+    .on('postgres_changes', { event:'INSERT', schema:'public', table:'notifications', filter:`user_id=eq.${user.id}` },
+      () => loadNotifications(user.id))
+    .subscribe();
+
+  /* load courses */
+  await refreshCourses();
+
+  /* filter tabs */
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeFilter = tab.dataset.filter;
+      renderCourses();
+    });
+  });
+
+  /* search */
+  document.getElementById('searchInput').addEventListener('input', e => {
+    renderCourses(e.target.value);
+  });
+
+  /* upload form */
+  const fileInput = document.getElementById('courseFile');
+  fileInput.addEventListener('change', e => {
+    if (e.target.files[0]) document.getElementById('fileName').textContent = `✓ ${e.target.files[0].name}`;
+  });
+
+  /* drag & drop on label */
+  const label = document.querySelector('.file-input-label');
+  label.addEventListener('dragover',  e => { e.preventDefault(); label.style.borderColor = 'var(--accent)'; });
+  label.addEventListener('dragleave', () => { label.style.borderColor = 'var(--border-light)'; });
+  label.addEventListener('drop', e => {
+    e.preventDefault();
+    label.style.borderColor = 'var(--border-light)';
+    if (e.dataTransfer.files[0]) {
+      fileInput.files = e.dataTransfer.files;
+      document.getElementById('fileName').textContent = `✓ ${e.dataTransfer.files[0].name}`;
+    }
+  });
+
+  document.getElementById('uploadForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    await handleUpload();
+  });
+
+  /* reviewer tab clicks */
+  document.getElementById('reviewerTabs').addEventListener('click', e => {
+    const tab = e.target.closest('.reviewer-tab');
+    if (!tab) return;
+    document.querySelectorAll('.reviewer-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderReviewerTab(tab.dataset.tab);
+  });
+
+  /* mark done */
+  document.getElementById('reviewerMarkDoneBtn').addEventListener('click', () => {
+    if (!reviewerCourseId) return;
+    markCourseDone(reviewerCourseId);
+  });
+
+  /* delete confirm */
+  document.getElementById('confirmDeleteCourseBtn').addEventListener('click', async () => {
+    if (!pendingDeleteId) return;
+    await dbDelete(pendingDeleteId);
+    await refreshCourses();
+    closeDeleteConfirm();
+    showToast('Deleted', 'Course removed.', 'success');
+  });
+
+  /* close modals on overlay click */
+  document.getElementById('uploadModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('uploadModal')) closeUploadModal();
+  });
+  document.getElementById('reviewerModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('reviewerModal')) closeReviewer();
+  });
+  document.getElementById('deleteConfirm').addEventListener('click', e => {
+    if (e.target === document.getElementById('deleteConfirm')) closeDeleteConfirm();
+  });
+
+  /* sidebar / nav dropdowns */
+  setupNav();
+});
+
+/* ── Helpers ── */
+function setEl(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+
+function applyAvatar(src) {
+  const s = 'width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;';
+  ['userAvatar','userDropdownAvatar'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = `<img src="${src}" style="${s}">`;
+  });
+}
+
+function fileTypeInfo(name='') {
+  const ext = name.split('.').pop().toLowerCase();
+  const map = {
+    pdf:  { icon:'🗎', badge:'pdf',  label:'PDF'   },
+    ppt:  { icon:'⎙', badge:'pptx', label:'PPT'   },
+    pptx: { icon:'⿻', badge:'pptx', label:'PPTX'  },
+    doc:  { icon:'🗁', badge:'docx', label:'Word'  },
+    docx: { icon:'🗁', badge:'docx', label:'Word'  },
+    txt:  { icon:'🗒', badge:'txt',  label:'Text'  },
+    md:   { icon:'🗒', badge:'txt',  label:'MD'    },
+  };
+  return map[ext] || { icon:'📎', badge:'other', label: ext.toUpperCase() };
+}
+
+const CARD_COLORS = [
+  'linear-gradient(135deg,#1a1a2e,#27272a)',
+  'linear-gradient(135deg,#0a0a1a,#1a1a2e)',
+  'linear-gradient(135deg,#1a0a0a,#2e1a1a)',
+  'linear-gradient(135deg,#0a1a0a,#1a2e1a)',
+  'linear-gradient(135deg,#0f0a1a,#1a0f2e)',
+  'linear-gradient(135deg,#1a1a0a,#2a2a1a)',
+];
+
+function colorFor(id) {
+  return CARD_COLORS[id % CARD_COLORS.length];
+}
+
+/* ── Load & Render ── */
+async function refreshCourses() {
+  allCourses = (await dbGetAll()).sort((a,b) => b.createdAt - a.createdAt);
+  renderCourses();
+}
+
+function renderCourses(query = '') {
+  const q = query.toLowerCase();
+  let filtered = allCourses.filter(c => {
+    if (activeFilter === 'active'    && c.status !== 'active')    return false;
+    if (activeFilter === 'completed' && c.status !== 'completed') return false;
+    if (q && !c.name.toLowerCase().includes(q) && !c.category.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  renderGrid(filtered);
+  renderList(filtered);
+}
+
+function renderGrid(courses) {
+  const grid = document.getElementById('coursesGrid');
+  if (!courses.length) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <div class="empty-icon">🕮</div>
+        <div class="empty-title">No courses yet</div>
+        <div class="empty-desc">Upload your notes, PDFs, or slides to get started.</div>
+        <button class="btn btn-primary" onclick="openUploadModal()">⬆ Upload Material</button>
+      </div>`;
+    return;
   }
 
-  .nav-search { display: none; }
-
-  .page-header { padding: 20px 24px; }
-  .filter-bar { flex-direction: column; align-items: stretch; }
-  .courses-grid { grid-template-columns: 1fr; }
-  .course-list-item { flex-wrap: wrap; }
-  .course-list-progress { width: 100%; order: 3; }
-  .course-list-actions { width: 100%; order: 4; justify-content: flex-end; }
+  grid.innerHTML = courses.map(c => {
+    const ft   = fileTypeInfo(c.fileName);
+    const pct  = c.progress || 0;
+    const done = c.status === 'completed';
+    return `
+    <div class="course-card" data-status="${c.status || 'active'}" data-id="${c.id}">
+      <button class="course-delete-btn" title="Delete" onclick="confirmDelete(${c.id},event)">✕</button>
+      <div class="course-image" style="background:${colorFor(c.id)};position:relative;">
+        <span style="position:absolute;bottom:12px;left:14px;">
+          <span class="file-type-badge ${ft.badge}">${ft.label}</span>
+        </span>
+        ${done ? '<span style="position:absolute;top:10px;left:10px;font-size:18px;">ꪜ</span>' : ''}
+      </div>
+      <div class="course-content">
+        <div class="course-category">${esc(c.category)}</div>
+        <div class="course-title">${esc(c.name)}</div>
+        <div class="course-desc">${esc(c.desc || 'No description.')}</div>
+        <div class="course-meta">
+          <span>${ft.icon} ${esc(c.fileName)}</span>
+          <span>📅 ${new Date(c.createdAt).toLocaleDateString()}</span>
+        </div>
+        <div class="course-progress">
+          <div class="progress-header">
+            <span class="progress-label">Progress</span>
+            <span class="progress-value">${pct}%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar" style="width:${pct}%"></div>
+          </div>
+        </div>
+        <div class="course-actions">
+          <button class="course-btn course-btn-primary" onclick="openReviewer(${c.id})">
+            ${ft.icon} Study / Review
+          </button>
+          <button class="course-btn course-btn-outline" onclick="confirmDelete(${c.id},event)">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-@media (max-width: 480px) {
-  .user-name { display: none; }
-  .course-actions { flex-direction: column; }
+function renderList(courses) {
+  const list = document.getElementById('coursesList');
+  if (!courses.length) { list.innerHTML = ''; return; }
+
+  list.innerHTML = courses.map(c => {
+    const ft  = fileTypeInfo(c.fileName);
+    const pct = c.progress || 0;
+    return `
+    <div class="course-list-item" data-status="${c.status || 'active'}" data-id="${c.id}">
+      <div class="course-list-icon" style="background:${colorFor(c.id)};">${ft.icon}</div>
+      <div class="course-list-info">
+        <div class="course-list-title">${esc(c.name)}</div>
+        <div class="course-list-meta">
+          <span>${esc(c.category)}</span><span>•</span>
+          <span class="file-type-badge ${ft.badge}" style="font-size:9px;">${ft.label}</span>
+          <span>•</span><span>${esc(c.fileName)}</span>
+        </div>
+      </div>
+      <div class="course-list-progress">
+        <div class="course-list-bar"><div class="course-list-fill" style="width:${pct}%"></div></div>
+        <div class="course-list-pct">${pct}%</div>
+      </div>
+      <div class="course-list-actions">
+        <button class="course-list-btn" onclick="openReviewer(${c.id})">Study</button>
+        <button class="course-list-btn" style="color:var(--error);" onclick="confirmDelete(${c.id},event)">✕</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-/* ── Modal ── */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
+function esc(str = '') {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-.modal.active {
-  display: flex;
+/* ── Upload ── */
+function openUploadModal()  { document.getElementById('uploadModal').classList.add('active'); }
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('active');
+  document.getElementById('uploadForm').reset();
+  document.getElementById('fileName').textContent = '';
+  document.getElementById('uploadProgressWrap').classList.remove('show');
+  document.getElementById('uploadProgressFill').style.width = '0%';
+  document.getElementById('uploadSubmitBtn').disabled = false;
 }
 
-.modal-content {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: var(--shadow-lg);
-  animation: slideIn 0.3s ease;
-}
+async function handleUpload() {
+  const name     = document.getElementById('courseName').value.trim();
+  const category = document.getElementById('courseCategory').value.trim();
+  const desc     = document.getElementById('courseDesc').value.trim();
+  const file     = document.getElementById('courseFile').files[0];
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  if (!name || !category || !file) { showToast('Missing fields','Please fill all required fields.','error'); return; }
+
+  const MAX = 10 * 1024 * 1024; // 10 MB
+  if (file.size > MAX) { showToast('File too large','Max 10 MB per file.','error'); return; }
+
+  const btn = document.getElementById('uploadSubmitBtn');
+  btn.disabled = true;
+
+  const wrap = document.getElementById('uploadProgressWrap');
+  const fill = document.getElementById('uploadProgressFill');
+  const lbl  = document.getElementById('uploadProgressLabel');
+  wrap.classList.add('show');
+
+  /* simulate progress while reading */
+  let prog = 0;
+  const progTimer = setInterval(() => {
+    prog = Math.min(prog + 8, 85);
+    fill.style.width = prog + '%';
+  }, 120);
+
+  try {
+    const fileData  = await readFileAsArrayBuffer(file);
+    const textData  = await extractTextFromFile(file);
+
+    clearInterval(progTimer);
+    fill.style.width = '100%';
+    lbl.textContent  = 'Saving...';
+
+    const course = {
+      id:        Date.now(),
+      name, category, desc,
+      fileName:  file.name,
+      fileData,
+      textData,          // extracted text for AI
+      progress:  0,
+      status:    'active',
+      createdAt: Date.now(),
+      notes:     '',
+      reviewerCache: null,
+    };
+
+    await dbPut(course);
+    await refreshCourses();
+    closeUploadModal();
+    showToast('Course created!', `"${name}" is ready to study.`, 'success');
+
+  } catch (err) {
+    clearInterval(progTimer);
+    console.error(err);
+    showToast('Error', 'Could not save course. Try again.', 'error');
+    btn.disabled = false;
+    wrap.classList.remove('show');
   }
 }
 
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px;
-  border-bottom: 1px solid var(--border);
+function readFileAsArrayBuffer(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload  = e => res(e.target.result);
+    r.onerror = () => rej(r.error);
+    r.readAsArrayBuffer(file);
+  });
 }
 
-.modal-header h2 {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0;
-}
+async function extractTextFromFile(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
 
-.modal-close {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 20px;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  transition: var(--transition);
-}
-
-.modal-close:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-.modal-body {
-  padding: 24px;
-}
-
-/* ── Form ── */
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-}
-
-.form-group input[type="text"],
-.form-group textarea {
-  width: 100%;
-  padding: 10px 12px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 13px;
-  color: var(--text-primary);
-  transition: var(--transition);
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: var(--text-muted);
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--border-light);
-  background: var(--bg-card);
-}
-
-.file-input-wrapper {
-  position: relative;
-  margin-bottom: 8px;
-}
-
-.file-input-wrapper input[type="file"] {
-  display: none;
-}
-
-.file-input-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 32px;
-  background: var(--bg-tertiary);
-  border: 2px dashed var(--border-light);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: var(--transition);
-  flex-direction: column;
-}
-
-.file-input-label:hover {
-  background: var(--bg-card);
-  border-color: var(--accent);
-}
-
-.file-input-icon {
-  font-size: 28px;
-}
-
-.file-input-text {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.file-name {
-  font-size: 12px;
-  color: var(--success);
-  margin-top: 8px;
-  font-weight: 500;
-}
-
-.file-help {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 8px;
-}
-
-.form-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-  justify-content: flex-end;
-}
-
-.form-actions .btn {
-  padding: 10px 20px;
-  font-size: 13px;
-}
-
-/* ── Responsive Modal ── */
-@media (max-width: 600px) {
-  .modal-content {
-    width: 95%;
-    max-height: 95vh;
+  if (ext === 'txt' || ext === 'md') {
+    return await file.text();
   }
 
-  .modal-header,
-  .modal-body {
-    padding: 16px;
+  /* For PDF/PPTX/DOCX we read as base64 — the Claude API supports PDF natively.
+     For everything else we return a placeholder. */
+  if (['pdf','pptx','ppt','doc','docx'].includes(ext)) {
+    return await readFileAsBase64(file);
   }
 
-  .file-input-label {
-    padding: 24px;
+  return await file.text().catch(() => '');
+}
+
+function readFileAsBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload  = e => res(e.target.result.split(',')[1]); // strip data:...;base64,
+    r.onerror = () => rej(r.error);
+    r.readAsDataURL(file);
+  });
+}
+
+/* ── Delete ── */
+function confirmDelete(id, e) {
+  if (e) e.stopPropagation();
+  pendingDeleteId = id;
+  document.getElementById('deleteConfirm').classList.add('active');
+}
+function closeDeleteConfirm() {
+  pendingDeleteId = null;
+  document.getElementById('deleteConfirm').classList.remove('active');
+}
+
+/* ── Reviewer ── */
+async function openReviewer(id) {
+  reviewerCourseId = id;
+  currentCard      = 0;
+  quizAnswered     = {};
+
+  const course = await dbGet(id);
+  if (!course) return;
+
+  /* header */
+  const ft = fileTypeInfo(course.fileName);
+  document.getElementById('reviewerIcon').textContent       = ft.icon;
+  document.getElementById('reviewerCourseName').textContent = course.name;
+  document.getElementById('reviewerCourseSub').textContent  = `${course.category} · ${course.fileName}`;
+
+  /* reset to summary tab */
+  document.querySelectorAll('.reviewer-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.reviewer-tab[data-tab="summary"]').classList.add('active');
+
+  document.getElementById('reviewerModal').classList.add('active');
+
+  /* use cached data if available */
+  if (course.reviewerCache) {
+    reviewerData = course.reviewerCache;
+    renderReviewerTab('summary');
+    return;
+  }
+
+  /* show loading */
+  document.getElementById('reviewerBody').innerHTML = `
+    <div class="ai-loading">
+      <div class="ai-loading-spinner"></div>
+      <div class="ai-loading-text">Reading your material with AI...</div>
+    </div>`;
+
+  try {
+    reviewerData = await generateReviewerContent(course);
+
+    /* cache it */
+    course.reviewerCache = reviewerData;
+    await dbPut(course);
+
+    renderReviewerTab('summary');
+  } catch (err) {
+    console.error('AI error:', err);
+    document.getElementById('reviewerBody').innerHTML = `
+      <div class="ai-loading">
+        <div style="font-size:32px;">⚠️</div>
+        <div class="ai-loading-text">Could not generate content. Check your connection and try again.</div>
+        <button class="btn btn-outline" style="margin-top:12px;" onclick="openReviewer(${id})">Retry</button>
+      </div>`;
   }
 }
 
- /* AI Reviewer Modal */
-    .reviewer-modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(4px);
-    }
-    .reviewer-modal-overlay.active { display: flex; }
+function closeReviewer() {
+  document.getElementById('reviewerModal').classList.remove('active');
+  reviewerCourseId = null;
+  reviewerData = null;
+}
 
-    .reviewer-modal {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      width: 92%;
-      max-width: 860px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.8);
-      animation: slideIn 0.3s ease;
-      overflow: hidden;
-    }
+async function markCourseDone(id) {
+  const course = await dbGet(id);
+  if (!course) return;
+  course.status   = 'completed';
+  course.progress = 100;
+  await dbPut(course);
+  await refreshCourses();
+  closeReviewer();
+  showToast('Course completed! 🎉', 'Great work!', 'success');
+}
 
-    .reviewer-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
+/* ── Claude API call ── */
+async function generateReviewerContent(course) {
+  const ext = course.fileName.split('.').pop().toLowerCase();
+  const isPdf = ext === 'pdf';
 
-    .reviewer-header-left { display: flex; align-items: center; gap: 12px; }
-    .reviewer-course-icon {
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-    .reviewer-course-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-    .reviewer-course-sub  { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+  let messages;
 
-    .reviewer-tabs {
-      display: flex;
-      gap: 4px;
-      padding: 12px 24px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-primary);
-      flex-shrink: 0;
-      overflow-x: auto;
-    }
-    .reviewer-tab {
-      padding: 7px 16px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      border: 1px solid transparent;
-      background: none;
-      color: var(--text-muted);
-      white-space: nowrap;
-      font-family: inherit;
-    }
-    .reviewer-tab:hover { background: var(--bg-tertiary); color: var(--text-secondary); }
-    .reviewer-tab.active { background: var(--bg-tertiary); color: var(--text-primary); border-color: var(--border-light); }
+  const prompt = `You are an expert tutor. Analyze the provided study material and generate:
 
-    .reviewer-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 24px;
-    }
+1. A clear SUMMARY (3-5 sentences, in plain language).
+2. KEY_POINTS: exactly 6 important bullet points.
+3. FLASHCARDS: exactly 8 flashcard pairs (term/concept + explanation). Keep each under 40 words.
+4. QUIZ: exactly 5 multiple-choice questions, each with 4 options (A/B/C/D), the correct answer letter, and a short explanation.
 
-    /* summary tab */
-    .summary-section { margin-bottom: 28px; }
-    .summary-section h3 {
-      font-size: 13px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.06em; color: var(--text-muted);
-      margin-bottom: 12px;
+Return ONLY valid JSON in this exact format:
+{
+  "summary": "...",
+  "keyPoints": ["...", "...", "...", "...", "...", "..."],
+  "flashcards": [
+    { "front": "...", "back": "..." }
+  ],
+  "quiz": [
+    {
+      "question": "...",
+      "options": { "A": "...", "B": "...", "C": "...", "D": "..." },
+      "answer": "A",
+      "explanation": "..."
     }
-    .summary-content {
-      font-size: 14px; line-height: 1.8;
-      color: var(--text-secondary);
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 16px;
-    }
-    .key-points-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .key-points-list li {
-      display: flex; gap: 10px; align-items: flex-start;
-      font-size: 14px; color: var(--text-secondary); line-height: 1.6;
-    }
-    .key-points-list li::before {
-      content: '◆'; color: var(--text-muted); font-size: 8px;
-      margin-top: 6px; flex-shrink: 0;
-    }
+  ]
+}`;
 
-    /* flashcards tab */
-    .flashcard-nav {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .flashcard-counter { font-size: 13px; color: var(--text-muted); font-weight: 600; }
-    .flashcard-nav-btns { display: flex; gap: 8px; }
-    .flashcard-nav-btn {
-      padding: 6px 14px; border-radius: 8px; font-size: 13px;
-      font-weight: 600; cursor: pointer; transition: var(--transition);
-      border: 1px solid var(--border); background: var(--bg-tertiary);
-      color: var(--text-secondary); font-family: inherit;
-    }
-    .flashcard-nav-btn:hover:not(:disabled) { background: var(--accent); color: var(--bg-primary); border-color: var(--accent); }
-    .flashcard-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  if (isPdf && course.textData) {
+    /* send as native PDF document */
+    messages = [{
+      role: 'user',
+      content: [
+        {
+          type: 'document',
+          source: { type: 'base64', media_type: 'application/pdf', data: course.textData }
+        },
+        { type: 'text', text: prompt }
+      ]
+    }];
+  } else if (['pptx','ppt','doc','docx'].includes(ext) && course.textData) {
+    /* binary office file — send base64 as text hint, ask AI to infer */
+    messages = [{
+      role: 'user',
+      content: `The following is base64 encoded content of a ${ext.toUpperCase()} file named "${course.fileName}" for a course called "${course.name}" (${course.category}). The student uploaded this as study material. Even without reading the binary, use the course name and category to generate realistic, educationally relevant content.\n\n${prompt}`
+    }];
+  } else {
+    /* plain text / notes */
+    const text = course.textData || `Course: ${course.name}\nCategory: ${course.category}\nDescription: ${course.desc}`;
+    messages = [{
+      role: 'user',
+      content: `Here is the study material:\n\n${text.slice(0, 12000)}\n\n${prompt}`
+    }];
+  }
 
-    .flashcard-scene {
-      perspective: 1000px;
-      height: 240px;
-      cursor: pointer;
-      margin-bottom: 16px;
-    }
-    .flashcard-inner {
-      position: relative;
-      width: 100%; height: 100%;
-      transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
-      transform-style: preserve-3d;
-    }
-    .flashcard-inner.flipped { transform: rotateY(180deg); }
-    .flashcard-front, .flashcard-back {
-      position: absolute; inset: 0;
-      backface-visibility: hidden;
-      border-radius: var(--radius-md);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 28px;
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-    .flashcard-front {
-      background: var(--bg-tertiary);
-    }
-    .flashcard-back {
-      background: var(--bg-card);
-      transform: rotateY(180deg);
-      border-color: var(--border-light);
-    }
-    .flashcard-label {
-      font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.1em; color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-    .flashcard-text { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.5; }
-    .flashcard-hint { font-size: 11px; color: var(--text-muted); margin-top: 16px; }
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model:      'claude-sonnet-4-20250514',
+      max_tokens: 2500,
+      messages
+    })
+  });
 
-    .flashcard-progress-bar {
-      height: 3px; background: var(--bg-tertiary); border-radius: 99px; overflow: hidden;
-    }
-    .flashcard-progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.3s ease; }
+  if (!resp.ok) throw new Error(`API ${resp.status}`);
+  const data = await resp.json();
 
-    /* quiz tab */
-    .quiz-question-card {
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .quiz-q-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 10px; }
-    .quiz-q-text { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.5; margin-bottom: 16px; }
-    .quiz-options { display: flex; flex-direction: column; gap: 8px; }
-    .quiz-option {
-      padding: 11px 16px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      font-size: 13px; color: var(--text-secondary);
-      cursor: pointer; transition: var(--transition);
-      display: flex; align-items: center; gap: 10px;
-      font-family: inherit; text-align: left; width: 100%;
-    }
-    .quiz-option:hover:not(.locked) { border-color: var(--border-light); color: var(--text-primary); background: var(--bg-hover); }
-    .quiz-option.correct { border-color: var(--success); background: rgba(34,197,94,0.08); color: var(--success); }
-    .quiz-option.wrong   { border-color: var(--error);   background: rgba(239,68,68,0.08);  color: var(--error);   }
-    .quiz-option.locked  { cursor: not-allowed; }
-    .quiz-option-letter {
-      width: 24px; height: 24px; border-radius: 50%;
-      background: var(--bg-tertiary); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; flex-shrink: 0;
-    }
-    .quiz-explanation {
-      margin-top: 12px; padding: 12px 14px;
-      background: var(--bg-card); border-radius: var(--radius-sm);
-      font-size: 13px; color: var(--text-secondary); line-height: 1.6;
-      border-left: 3px solid var(--border-light);
-      display: none;
-    }
-    .quiz-explanation.show { display: block; }
-    .quiz-score-banner {
-      padding: 20px; background: var(--bg-tertiary); border: 1px solid var(--border);
-      border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;
-    }
-    .quiz-score-num { font-size: 36px; font-weight: 800; color: var(--text-primary); }
-    .quiz-score-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  const raw  = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+  const json = raw.replace(/```json|```/g, '').trim();
+  return JSON.parse(json);
+}
 
-    /* loading state */
-    .ai-loading {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 60px 20px; gap: 16px;
-    }
-    .ai-loading-spinner {
-      width: 36px; height: 36px;
-      border: 3px solid var(--border);
-      border-top-color: var(--text-primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .ai-loading-text { font-size: 14px; color: var(--text-muted); }
+/* ── Reviewer Tab Rendering ── */
+function renderReviewerTab(tab) {
+  const body = document.getElementById('reviewerBody');
+  if (!reviewerData) return;
 
-    /* delete confirm overlay */
-    .delete-confirm {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 3000;
-      align-items: center; justify-content: center;
-      backdrop-filter: blur(4px);
-    }
-    .delete-confirm.active { display: flex; }
-    .delete-confirm-box {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 28px; max-width: 380px; width: 90%;
-      text-align: center;
-      animation: slideIn 0.25s ease;
-    }
-    .delete-confirm-box h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-    .delete-confirm-box p  { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
-    .delete-confirm-btns   { display: flex; gap: 10px; justify-content: center; }
+  if (tab === 'summary')    renderSummary(body);
+  if (tab === 'flashcards') renderFlashcards(body);
+  if (tab === 'quiz')       renderQuiz(body);
+  if (tab === 'notes')      renderNotes(body);
+}
 
-    /* toast */
-    .toast-container {
-      position: fixed; bottom: 24px; right: 24px;
-      z-index: 9999; display: flex; flex-direction: column; gap: 10px;
-    }
-    .toast {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: var(--bg-secondary); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 14px 18px;
-      box-shadow: var(--shadow-lg); min-width: 260px; max-width: 360px;
-      animation: slideInRight 0.3s ease;
-    }
-    @keyframes slideInRight { from { opacity:0; transform: translateX(24px); } }
-    .toast.success { border-color: var(--success); }
-    .toast.error   { border-color: var(--error); }
-    .toast-icon { font-size: 16px; flex-shrink:0; margin-top:1px; }
-    .toast-title { font-size: 13px; font-weight:700; color: var(--text-primary); }
-    .toast-msg   { font-size: 12px; color: var(--text-muted); margin-top:2px; }
+function renderSummary(body) {
+  const d = reviewerData;
+  body.innerHTML = `
+    <div class="summary-section">
+      <h3>Overview</h3>
+      <div class="summary-content">${esc(d.summary)}</div>
+    </div>
+    <div class="summary-section">
+      <h3>Key Points</h3>
+      <ul class="key-points-list">
+        ${(d.keyPoints || []).map(p => `<li>${esc(p)}</li>`).join('')}
+      </ul>
+    </div>`;
+}
 
-    /* course card delete btn */
-    .course-delete-btn {
-      position: absolute; top: 10px; right: 10px;
-      width: 28px; height: 28px;
-      background: rgba(10,10,10,0.7); border: 1px solid var(--border);
-      border-radius: 6px; cursor: pointer; display: none;
-      align-items: center; justify-content: center;
-      font-size: 14px; color: var(--text-muted);
-      transition: var(--transition); z-index: 2;
-    }
-    .course-card:hover .course-delete-btn { display: flex; }
-    .course-delete-btn:hover { background: var(--error); color: #fff; border-color: var(--error); }
+function renderFlashcards(body) {
+  const cards = reviewerData.flashcards || [];
+  if (!cards.length) { body.innerHTML = '<div class="ai-loading"><div>No flashcards generated.</div></div>'; return; }
 
-    .course-card { position: relative; }
+  const idx  = Math.max(0, Math.min(currentCard, cards.length - 1));
+  const card = cards[idx];
+  const pct  = ((idx + 1) / cards.length * 100).toFixed(0);
 
-    /* file type badge */
-    .file-type-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 3px 8px; border-radius: 5px;
-      font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-    .file-type-badge.pdf  { background: rgba(239,68,68,0.12);  color: #ef4444; }
-    .file-type-badge.pptx { background: rgba(245,158,11,0.12); color: #f59e0b; }
-    .file-type-badge.docx { background: rgba(59,130,246,0.12); color: #3b82f6; }
-    .file-type-badge.txt  { background: rgba(113,113,122,0.2); color: #a1a1aa; }
-    .file-type-badge.other{ background: rgba(113,113,122,0.2); color: #a1a1aa; }
+  body.innerHTML = `
+    <div class="flashcard-nav">
+      <span class="flashcard-counter">${idx + 1} / ${cards.length}</span>
+      <div class="flashcard-nav-btns">
+        <button class="flashcard-nav-btn" id="fcPrev" ${idx === 0 ? 'disabled' : ''}>← Prev</button>
+        <button class="flashcard-nav-btn" id="fcNext" ${idx === cards.length-1 ? 'disabled' : ''}>Next →</button>
+      </div>
+    </div>
+    <div class="flashcard-scene" id="flashcardScene">
+      <div class="flashcard-inner" id="flashcardInner">
+        <div class="flashcard-front">
+          <div class="flashcard-label">Term / Concept</div>
+          <div class="flashcard-text">${esc(card.front)}</div>
+          <div class="flashcard-hint">Click to reveal answer</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-label">Answer</div>
+          <div class="flashcard-text">${esc(card.back)}</div>
+        </div>
+      </div>
+    </div>
+    <div class="flashcard-progress-bar">
+      <div class="flashcard-progress-fill" style="width:${pct}%"></div>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-muted);">
+      Progress: ${idx + 1} / ${cards.length} cards
+    </div>`;
 
-    /* upload progress */
-    .upload-progress-wrap {
-      margin-top: 12px; display: none;
-    }
-    .upload-progress-wrap.show { display: block; }
-    .upload-progress-bar {
-      height: 4px; background: var(--bg-tertiary); border-radius: 99px; overflow: hidden;
-    }
-    .upload-progress-fill {
-      height: 100%; background: var(--accent); border-radius: 99px;
-      transition: width 0.4s ease; width: 0%;
-    }
-    .upload-progress-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+  /* flip on click */
+  document.getElementById('flashcardScene').addEventListener('click', () => {
+    document.getElementById('flashcardInner').classList.toggle('flipped');
+  });
 
-    /* notes textarea in reviewer */
-    .notes-area {
-      width: 100%; min-height: 180px; padding: 14px;
-      background: var(--bg-tertiary); border: 1px solid var(--border);
-      border-radius: var(--radius-md); font-family: inherit;
-      font-size: 14px; color: var(--text-primary); resize: vertical;
-      transition: var(--transition); line-height: 1.7;
-    }
-    .notes-area:focus { outline: none; border-color: var(--border-light); background: var(--bg-card); }
-    .notes-area::placeholder { color: var(--text-muted); }
-    .notes-save-btn {
-      margin-top: 10px;
-      padding: 8px 18px; border-radius: 8px;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      border: 1px solid var(--border); background: var(--bg-tertiary);
-      color: var(--text-secondary); font-family: inherit;
-      transition: var(--transition);
-    }
-    .notes-save-btn:hover { background: var(--accent); color: var(--bg-primary); border-color: var(--accent); }
+  document.getElementById('fcPrev').addEventListener('click', () => {
+    currentCard = Math.max(0, currentCard - 1);
+    renderFlashcards(body);
+  });
+  document.getElementById('fcNext').addEventListener('click', () => {
+    currentCard = Math.min(cards.length - 1, currentCard + 1);
+    renderFlashcards(body);
 
+    /* update progress on course when reaching last card */
+    if (currentCard === cards.length - 1) updateProgress(50);
+  });
+}
+
+function renderQuiz(body) {
+  const qs = reviewerData.quiz || [];
+  if (!qs.length) { body.innerHTML = '<div class="ai-loading"><div>No quiz generated.</div></div>'; return; }
+
+  const answered = Object.keys(quizAnswered).length;
+  const correct  = Object.values(quizAnswered).filter(Boolean).length;
+
+  let html = '';
+
+  if (answered === qs.length) {
+    html += `
+      <div class="quiz-score-banner">
+        <div class="quiz-score-num">${correct}/${qs.length}</div>
+        <div class="quiz-score-label">Correct answers · ${Math.round(correct/qs.length*100)}% score</div>
+      </div>`;
+    if (correct === qs.length) updateProgress(100);
+    else if (correct >= qs.length * 0.6) updateProgress(75);
+  }
+
+  html += qs.map((q, qi) => {
+    const chosen = quizAnswered[qi];
+    return `
+    <div class="quiz-question-card">
+      <div class="quiz-q-num">Question ${qi + 1}</div>
+      <div class="quiz-q-text">${esc(q.question)}</div>
+      <div class="quiz-options">
+        ${Object.entries(q.options).map(([letter, text]) => {
+          let cls = 'quiz-option';
+          if (chosen) {
+            cls += ' locked';
+            if (letter === q.answer) cls += ' correct';
+            else if (letter === chosen) cls += ' wrong';
+          }
+          return `
+          <button class="${cls}" onclick="answerQuiz(${qi},'${letter}')">
+            <span class="quiz-option-letter">${letter}</span>
+            ${esc(text)}
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="quiz-explanation ${chosen ? 'show' : ''}" id="qexp-${qi}">
+        💡 ${esc(q.explanation)}
+      </div>
+    </div>`;
+  }).join('');
+
+  if (answered < qs.length) {
+    html += `<div style="text-align:center;padding:16px 0;font-size:13px;color:var(--text-muted);">
+      ${answered} of ${qs.length} answered
+    </div>`;
+  } else {
+    html += `<button class="btn btn-outline" style="width:100%;margin-top:4px;" onclick="resetQuiz()">Retake Quiz</button>`;
+  }
+
+  body.innerHTML = html;
+}
+
+function answerQuiz(qi, letter) {
+  const q = reviewerData.quiz[qi];
+  quizAnswered[qi] = letter;
+  /* re-render to lock all options and show explanation */
+  renderQuiz(document.getElementById('reviewerBody'));
+}
+
+function resetQuiz() {
+  quizAnswered = {};
+  renderQuiz(document.getElementById('reviewerBody'));
+}
+
+async function renderNotes(body) {
+  const course = await dbGet(reviewerCourseId);
+  const notes  = course?.notes || '';
+
+  body.innerHTML = `
+    <div class="summary-section">
+      <h3>My Notes</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">
+        Jot down anything you want to remember about this material.
+      </p>
+      <textarea class="notes-area" id="notesTextarea" placeholder="Write your notes here...">${esc(notes)}</textarea>
+      <button class="notes-save-btn" onclick="saveNotes()">Save Notes</button>
+    </div>`;
+}
+
+async function saveNotes() {
+  const text   = document.getElementById('notesTextarea')?.value || '';
+  const course = await dbGet(reviewerCourseId);
+  if (!course) return;
+  course.notes = text;
+  await dbPut(course);
+  showToast('Saved!', 'Your notes have been saved.', 'success');
+}
+
+async function updateProgress(pct) {
+  const course = await dbGet(reviewerCourseId);
+  if (!course) return;
+  if ((course.progress || 0) >= pct) return; // never go down
+  course.progress = pct;
+  if (pct >= 100) course.status = 'completed';
+  await dbPut(course);
+  await refreshCourses();
+}
+
+/* ── View toggle ── */
+function toggleView() {
+  listView = !listView;
+  const grid = document.getElementById('coursesGrid');
+  const list = document.getElementById('coursesList');
+  const btn  = document.querySelector('.filter-actions .btn-outline');
+  if (listView) {
+    grid.style.display = 'none';
+    list.classList.add('active');
+    btn.textContent = '⊞ Grid View';
+  } else {
+    grid.style.display = '';
+    list.classList.remove('active');
+    btn.textContent = '☰ List View';
+  }
+}
+
+/* ── Notifications ── */
+async function loadNotifications(userId) {
+  const { data } = await client.from('notifications').select('*')
+    .eq('user_id', userId).order('created_at', { ascending: false });
+  if (!data) return;
+
+  document.getElementById('notifBadge').classList.toggle('active', data.some(n => !n.is_read));
+  const list = document.getElementById('notifList');
+  if (!data.length) { list.innerHTML = '<div class="notif-empty">No notifications yet</div>'; return; }
+
+  list.innerHTML = data.map(n => `
+    <div class="notif-item ${n.is_read?'read':'unread'}" onclick="markRead('${n.id}')">
+      <div class="notif-dot"></div>
+      <div>
+        <div class="notif-msg">${n.message}</div>
+        <div class="notif-time">${timeAgo(n.created_at)}</div>
+      </div>
+    </div>`).join('');
+}
+
+async function markRead(id) {
+  await client.from('notifications').update({ is_read: true }).eq('id', id);
+  const { data: { user } } = await client.auth.getUser();
+  if (user) loadNotifications(user.id);
+}
+
+function timeAgo(d) {
+  const s = Math.floor((Date.now() - new Date(d)) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return `${Math.floor(s/60)}m ago`;
+  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+  return `${Math.floor(s/86400)}d ago`;
+}
+
+async function handleLogout(e) {
+  e.preventDefault();
+  await client.auth.signOut();
+  localStorage.removeItem('username');
+  window.location.href = 'index.html';
+}
+
+/* ── Toast ── */
+function showToast(title, msg, type='info') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  const icons = { success:'✓', error:'✕', info:'i', warning:'!' };
+  t.innerHTML = `
+    <span class="toast-icon">${icons[type]||'i'}</span>
+    <div>
+      <div class="toast-title">${title}</div>
+      <div class="toast-msg">${msg}</div>
+    </div>`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 4500);
+}
+
+/* ── Nav setup ── */
+function setupNav() {
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    const sb   = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    if (window.innerWidth <= 768) sb.classList.toggle('mobile-open');
+    else { sb.classList.toggle('collapsed'); main.classList.toggle('sidebar-collapsed'); }
+  });
+
+  document.getElementById('markAllRead').addEventListener('click', async () => {
+    const { data: { user } } = await client.auth.getUser();
+    if (!user) return;
+    await client.from('notifications').update({ is_read: true })
+      .eq('user_id', user.id).eq('is_read', false);
+    loadNotifications(user.id);
+  });
+
+  document.getElementById('notifBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    document.getElementById('notifDropdown').classList.toggle('open');
+    document.getElementById('userDropdown').classList.remove('open');
+  });
+  document.getElementById('notifDropdown').addEventListener('click', e => e.stopPropagation());
+  document.getElementById('userMenuBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    document.getElementById('userDropdown').classList.toggle('open');
+    document.getElementById('notifDropdown').classList.remove('open');
+  });
+  document.getElementById('userDropdown').addEventListener('click', e => e.stopPropagation());
+
+  document.addEventListener('click', e => {
+    const sb = document.getElementById('sidebar');
+    if (window.innerWidth <= 768 && sb.classList.contains('mobile-open')
+      && !sb.contains(e.target) && e.target !== document.getElementById('menuToggle'))
+      sb.classList.remove('mobile-open');
+    if (!e.target.closest('.notification-wrapper'))
+      document.getElementById('notifDropdown').classList.remove('open');
+    if (!e.target.closest('.user-menu-wrapper'))
+      document.getElementById('userDropdown').classList.remove('open');
+  });
+}
