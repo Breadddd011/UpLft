@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="dashboard.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body>
 
@@ -53,11 +54,11 @@
           </div>
         </div>
         <div class="user-dropdown-divider"></div>
-        <a href="profile.html" class="user-dropdown-item">✧ &nbsp;Profile</a>
-        <a href="#" class="user-dropdown-item">✧ &nbsp;Settings</a>
-        <a href="#" class="user-dropdown-item">✧ &nbsp;Help & Support</a>
+        <a href="profile.html" class="user-dropdown-item">☻ &nbsp;Profile</a>
+        <a href="#" class="user-dropdown-item">🌣 &nbsp;Settings</a>
+        <a href="#" class="user-dropdown-item">🛠 &nbsp;Help & Support</a>
         <div class="user-dropdown-divider"></div>
-        <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">🚪 &nbsp;Logout</a>
+        <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">➜] &nbsp;Logout</a>
       </div>
     </div>
 
@@ -105,8 +106,15 @@
         <span class="nav-icon">✍︎</span>
         <span class="nav-text">Blogs</span>
       </a>
-
+      
       <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Social</div>
+
+      <a href="social.html" class="nav-item">
+        <span class="nav-icon">🗪</span>
+        <span class="nav-text">Community</span>
+      </a>
 
     </nav>
   </aside>
@@ -119,11 +127,11 @@
       <div class="welcome-text">
         <h1 id="welcomeTitle">Welcome back! ( ˶ˆᗜˆ˵ )</h1>
         <p>Here's what's happening with your learning today.</p>
+        <div class="welcome-actions" style="margin-top:16px;">
+          <a href="mycourses.html" class="btn btn-primary">Continue Learning →</a>
+        </div>
       </div>
-      <div class="welcome-actions">
-        <a href="courses2.html" class="btn btn-outline">Browse Courses</a>
-        <a href="courses2.html" class="btn btn-primary">Continue Learning →</a>
-      </div>
+      <div class="welcome-lottie" id="welcomeLottie"></div>
     </div>
 
     <!-- stats -->
@@ -385,5 +393,20 @@
 </div>
 
 <script src="dashboard.js"></script>
+<script>
+  /* lottie animations */
+  (function () {
+    const container = document.getElementById('welcomeLottie');
+    if (!container || typeof lottie === 'undefined') return;
+
+    lottie.loadAnimation({
+      container,
+      renderer: 'svg',
+      loop:     true,
+      autoplay: true,
+      path: 'https://assets10.lottiefiles.com/packages/lf20_fcfjwiyb.json'
+    });
+  })();
+</script>
 </body>
 </html>
