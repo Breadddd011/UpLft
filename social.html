@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socials — UpLift</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/social.css">
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <div class="logo">UpLift</div>
+  </div>
+
+  <div class="nav-right">
+
+    <div class="notification-wrapper">
+      <button class="notif-btn" id="notifBtn">
+        🔔
+        <span class="notif-badge" id="notifBadge"></span>
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-head">
+          <span>Notifications</span>
+          <button class="notif-mark-btn" id="markAllRead">Mark all read</button>
+        </div>
+        <div class="notif-list" id="notifList">
+          <div class="notif-empty">No notifications yet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-menu-wrapper">
+      <button class="user-btn" id="userMenuBtn">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-name" id="usernameDisplay">User</span>
+        <span style="font-size:10px; color:var(--text-muted);">▾</span>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <div class="user-dropdown-avatar" id="userDropdownAvatar">?</div>
+          <div>
+            <div class="user-dropdown-name" id="userDropdownName">User</div>
+            <div class="user-dropdown-email" id="userDropdownEmail"></div>
+          </div>
+        </div>
+        <div class="user-dropdown-divider"></div>
+        <a href="profile.html" class="user-dropdown-item">✧ &nbsp;Profile</a>
+        <a href="#" class="user-dropdown-item">✧ &nbsp;Settings</a>
+        <a href="#" class="user-dropdown-item">✧ &nbsp;Help &amp; Support</a>
+        <div class="user-dropdown-divider"></div>
+        <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">🚪 &nbsp;Logout</a>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- layout -->
+<div class="layout">
+
+  <!-- sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-label">Main</div>
+
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">⌂</span>
+        <span class="nav-text">Home</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Learning</div>
+
+      <a href="mycourses.html" class="nav-item">
+        <span class="nav-icon">✎</span>
+        <span class="nav-text">My courses</span>
+      </a>
+
+      <a href="dashboard.html#deadlines" class="nav-item">
+        <span class="nav-icon">⏱</span>
+        <span class="nav-text">Deadlines</span>
+      </a>
+
+      <a href="progress.html" class="nav-item">
+        <span class="nav-icon">◎</span>
+        <span class="nav-text">Progress</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Content</div>
+
+      <a href="blog.html" class="nav-item">
+        <span class="nav-icon">✍︎</span>
+        <span class="nav-text">Blogs</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-label">Social</div>
+
+      <a href="social.html" class="nav-item active">
+        <span class="nav-icon">🗪</span>
+        <span class="nav-text">Community</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+    </nav>
+  </aside>
+
+  <!-- main -->
+  <main class="main-content" id="mainContent">
+
+    <!-- welcome -->
+    <div class="welcome-banner">
+      <div class="welcome-text">
+        <h1>Social Feed</h1>
+        <p>Share your progress, achievements, and connect with the community.</p>
+      </div>
+      <div class="welcome-actions">
+        <button class="btn btn-outline" id="shareUpdateBtn">Share Update →</button>
+      </div>
+    </div>
+
+    <!-- Social Grid -->
+    <div class="social-grid">
+
+      <!-- Left Sidebar - Stats -->
+      <div class="social-sidebar-left">
+        <div class="section-card stats-card">
+          <div class="section-head">
+            <h2>Your Stats</h2>
+          </div>
+          <div class="stats-list">
+            <div class="stat-row">
+              <span class="stat-label-sm">Posts</span>
+              <span class="stat-value-sm" id="userPostsCount">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label-sm">Likes Received</span>
+              <span class="stat-value-sm" id="userLikesCount">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label-sm">Comments</span>
+              <span class="stat-value-sm" id="userCommentsCount">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card" style="margin-top: 20px;">
+          <div class="section-head">
+            <h2>Top Contributors</h2>
+          </div>
+          <div style="padding: 8px 0;">
+            <div class="contributor-item">
+              <div class="contributor-rank">1</div>
+              <span class="contributor-name">Alice Smith</span>
+              <span class="contributor-posts">45 posts</span>
+            </div>
+            <div class="contributor-item">
+              <div class="contributor-rank">2</div>
+              <span class="contributor-name">Bob Johnson</span>
+              <span class="contributor-posts">38 posts</span>
+            </div>
+            <div class="contributor-item">
+              <div class="contributor-rank">3</div>
+              <span class="contributor-name">Carol White</span>
+              <span class="contributor-posts">31 posts</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Feed -->
+      <div class="social-main">
+
+        <!-- Filters -->
+        <div class="feed-filters section-card">
+          <select class="filter-select" id="categoryFilter">
+            <option value="all">All Categories</option>
+            <option value="achievement">Achievement</option>
+            <option value="progress">Progress</option>
+            <option value="question">Question</option>
+            <option value="discussion">Discussion</option>
+          </select>
+          <select class="filter-select" id="sortFilter">
+            <option value="recent">Most Recent</option>
+            <option value="popular">Most Popular</option>
+            <option value="comments">Most Comments</option>
+          </select>
+        </div>
+
+        <!-- Create Post Card -->
+        <div class="section-card create-post-card" id="createPostCard" style="cursor:pointer;">
+          <div style="display:flex; align-items:center; gap:14px; padding: 4px 0;">
+            <div class="current-user-avatar" id="postUserAvatar">JD</div>
+            <input type="text" class="post-input" placeholder="Share your progress..." id="postInput" readonly>
+          </div>
+        </div>
+
+        <!-- Posts Feed -->
+        <div class="posts-feed" id="postsFeed">
+          <!-- Posts rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div class="social-sidebar-right">
+        <div class="section-card">
+          <div class="section-head">
+            <h2>Trending</h2>
+          </div>
+          <div style="padding: 8px 0;">
+            <div class="trending-item">
+              <span class="trending-tag">#WebDevelopment</span>
+              <span class="trending-count">234 posts</span>
+            </div>
+            <div class="trending-item">
+              <span class="trending-tag">#Learning</span>
+              <span class="trending-count">189 posts</span>
+            </div>
+            <div class="trending-item">
+              <span class="trending-tag">#Progress</span>
+              <span class="trending-count">156 posts</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Create Post Modal -->
+<div class="modal-overlay" id="createPostModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Create Post</h2>
+      <button class="modal-close" id="closePostModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <div class="current-user-avatar" id="modalUserAvatar">JD</div>
+        <div>
+          <div style="font-size:14px; font-weight:700; color:var(--text-primary);" id="modalUserName">John Doe</div>
+        </div>
+      </div>
+      <textarea class="modal-textarea" placeholder="What's on your mind? Share your progress, achievements, or thoughts..." id="postTextarea"></textarea>
+      <div class="modal-options">
+        <select class="category-select" id="postCategory">
+          <option value="discussion">💬 Discussion</option>
+          <option value="achievement">🏆 Achievement</option>
+          <option value="progress">📈 Progress</option>
+          <option value="question">❓ Question</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="cancelPost">Cancel</button>
+      <button class="btn btn-primary" id="submitPost">Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- Comments Modal -->
+<div class="modal-overlay" id="commentsModal">
+  <div class="modal-container comments-modal">
+    <div class="modal-header">
+      <h2>Comments</h2>
+      <button class="modal-close" id="closeCommentsModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="original-post-preview" id="originalPost"></div>
+      <div class="comments-list" id="commentsList"></div>
+      <div class="comment-form">
+        <div class="current-user-avatar" style="width:32px;height:32px;font-size:11px;flex-shrink:0;" id="commentUserAvatar">JD</div>
+        <input type="text" class="comment-input" placeholder="Write a comment..." id="commentInput">
+        <button class="send-btn" id="submitComment" style="padding:8px 14px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="../js/social.js"></script>
+</body>
+</html>
