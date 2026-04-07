@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body>
@@ -392,21 +392,6 @@
   </main>
 </div>
 
-<script src="dashboard.js"></script>
-<script>
-  /* lottie animations */
-  (function () {
-    const container = document.getElementById('welcomeLottie');
-    if (!container || typeof lottie === 'undefined') return;
-
-    lottie.loadAnimation({
-      container,
-      renderer: 'svg',
-      loop:     true,
-      autoplay: true,
-      path: 'https://assets10.lottiefiles.com/packages/lf20_fcfjwiyb.json'
-    });
-  })();
-</script>
+<script src="../js/dashboard.js"></script>
 </body>
 </html>
