@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/dashboard.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
@@ -75,7 +76,7 @@
       <div class="sidebar-label">Main</div>
 
       <a href="dashboard.html" class="nav-item active">
-        <span class="nav-icon">⌂</span>
+        <span class="nav-icon">🏠</span>
         <span class="nav-text">Home</span>
       </a>
 
@@ -89,12 +90,12 @@
       </a>
 
       <a href="#deadlines" class="nav-item" onclick="smoothScroll('deadlines',event)">
-        <span class="nav-icon">⏱</span>
+        <span class="nav-icon">🕛</span>
         <span class="nav-text">Deadlines</span>
       </a>
 
       <a href="progress.html" class="nav-item">
-        <span class="nav-icon">◎</span>
+        <span class="nav-icon">📊</span>
         <span class="nav-text">Progress</span>
       </a>
 
@@ -103,7 +104,7 @@
       <div class="sidebar-label">Content</div>
 
       <a href="blog.html" class="nav-item">
-        <span class="nav-icon">✍︎</span>
+        <span class="nav-icon">✍🏻</span>
         <span class="nav-text">Blogs</span>
       </a>
       
@@ -112,7 +113,7 @@
       <div class="sidebar-label">Social</div>
 
       <a href="social.html" class="nav-item">
-        <span class="nav-icon">🗪</span>
+        <span class="nav-icon">💬</span>
         <span class="nav-text">Community</span>
       </a>
 
@@ -132,11 +133,11 @@
         </div>
       </div>
       <div class="welcome-lottie" id="welcomeLottie"></div>
-    </div>
+    </div> 
 
     <!-- stats -->
     <div class="stats-grid">
-      <div class="stat-card">
+      <div class="stat-card courses">
         <div class="stat-top">
           <span class="stat-label">Courses</span>
           <span class="stat-icon">✎</span>
@@ -144,7 +145,7 @@
         <div class="stat-number">5</div>
         <div class="stat-change up">+2 new this week</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card completed">
         <div class="stat-top">
           <span class="stat-label">Completed</span>
           <span class="stat-icon">✔</span>
@@ -152,7 +153,7 @@
         <div class="stat-number">12</div>
         <div class="stat-change up">+3 this week</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card study-hours">
         <div class="stat-top">
           <span class="stat-label">Study Hours</span>
           <span class="stat-icon">⏱</span>
@@ -160,7 +161,7 @@
         <div class="stat-number">24</div>
         <div class="stat-change up">+4h this week</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card streak">
         <div class="stat-top">
           <span class="stat-label">Streak</span>
           <span class="stat-icon">🔥</span>
@@ -175,7 +176,7 @@
 
       <!-- mycourses -->
       <div class="section-card">
-        <div class="section-head">
+        <div class="section-head my-courses-head">
           <h2>My Courses</h2>
           <a href="mycourses.html" class="section-link">View all →</a>
         </div>
@@ -233,7 +234,7 @@
 
       <!-- deadlines -->
       <div class="section-card" id="deadlines">
-        <div class="section-head">
+        <div class="section-head upcoming-deadlines-head">
           <h2>Upcoming Deadlines</h2>
         </div>
         <div class="deadlines-list">
@@ -291,7 +292,7 @@
 
       <!-- recent activity -->
       <div class="section-card">
-        <div class="section-head">
+        <div class="section-head recent-activity-head">
           <h2>Recent Activity</h2>
         </div>
         <div class="activity-list">
@@ -335,7 +336,7 @@
 
       <!-- subject progress -->
       <div class="section-card">
-        <div class="section-head">
+        <div class="section-head subject-progress-head">
           <h2>Subject Progress</h2>
         </div>
         <div class="subjects-list">
