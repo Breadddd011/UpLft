@@ -381,6 +381,7 @@ function setupNavEvents(userId) {
 }
 
   /* lottie animations */
+  
   (function () {
     const container = document.getElementById('welcomeLottie');
     if (!container || typeof lottie === 'undefined') return;
