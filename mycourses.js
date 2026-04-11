@@ -1,9 +1,4 @@
-/* ============================================================
-   mycourses.js  —  UpLift
-   Upload-based courses + AI reviewer (summary / flashcards / quiz / notes)
-   Data lives in IndexedDB so it persists across sessions
-   ============================================================ */
-
+/* Most difficult file of the project */
 const { createClient } = supabase;
 const client = createClient(
   'https://tiyapgnehlwbhhzqqumq.supabase.co',
@@ -13,7 +8,31 @@ const client = createClient(
 /* ── State ── */
 let listView = false;
 let db = null;
-let allCourses = [];          // in-memory cache
+let allCourses = [];
+const STEM_COURSES = [  // in-memory cache
+  {
+    id: 'stem-1',
+    name: "Earth Science 1",
+    category: "STEM",
+    desc: "Lecture module",
+    fileName: "STEM Earth Science_1.pdf",
+    builtIn: true,
+    progress: 0,
+    status: "active",
+    createdAt: Date.now() - 100000
+  },
+  {
+    id: 'stem-2',
+    name: "General Biology 1",
+    category: "STEM",
+    desc: "Lecture module",
+    fileName: "STEM General Biology_1.pdf",
+    builtIn: true,
+    progress: 0,
+    status: "active",
+    createdAt: Date.now() - 90000
+  }
+];         
 let activeFilter = 'all';
 let pendingDeleteId = null;
 
@@ -197,6 +216,40 @@ window.addEventListener('DOMContentLoaded', async () => {
   setupNav();
 });
 
+
+document.addEventListener('click', (e) => {
+  const notifDropdown = document.getElementById('notifDropdown');
+  const userDropdown = document.getElementById('userDropdown');
+  const notifBtn = document.getElementById('notifBtn');
+  const userMenuBtn = document.getElementById('userMenuBtn');
+
+  // Logic for Notification Dropdown
+  if (notifBtn.contains(e.target)) {
+    notifDropdown.classList.toggle('open');
+    userDropdown.classList.remove('open');
+  } 
+  // Logic for User Dropdown
+  else if (userMenuBtn.contains(e.target)) {
+    userDropdown.classList.toggle('open');
+    notifDropdown.classList.remove('open');
+  } 
+  // Close if clicking anywhere else
+  else {
+    if (!notifDropdown.contains(e.target)) notifDropdown.classList.remove('open');
+    if (!userDropdown.contains(e.target)) userDropdown.classList.remove('open');
+  }
+});
+
+// close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.menu-btn')) {
+    const dropdowns = document.getElementsByClassName("dropdown");
+    for (let i = 0; i < dropdowns.length; i++) {
+      dropdowns[i].style.display = "none";
+    }
+  }
+}
+
 /* ── Helpers ── */
 function setEl(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
 
@@ -231,13 +284,23 @@ const CARD_COLORS = [
   'linear-gradient(135deg,#1a1a0a,#2a2a1a)',
 ];
 
+/* FIX 4: handle both numeric and string IDs for colorFor */
 function colorFor(id) {
-  return CARD_COLORS[id % CARD_COLORS.length];
+  const index = typeof id === 'number'
+    ? id
+    : id.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  return CARD_COLORS[index % CARD_COLORS.length];
 }
 
 /* ── Load & Render ── */
 async function refreshCourses() {
-  allCourses = (await dbGetAll()).sort((a,b) => b.createdAt - a.createdAt);
+  const userCourses = await dbGetAll();
+
+  allCourses = [
+    ...STEM_COURSES,
+    ...userCourses
+  ].sort((a,b) => b.createdAt - a.createdAt);
+
   renderCourses();
 }
 
@@ -267,13 +330,15 @@ function renderGrid(courses) {
     return;
   }
 
+  /* FIX 3: stringify id in onclick so string IDs like 'stem-1' are passed correctly */
   grid.innerHTML = courses.map(c => {
     const ft   = fileTypeInfo(c.fileName);
     const pct  = c.progress || 0;
     const done = c.status === 'completed';
+    const idAttr = JSON.stringify(String(c.id));
     return `
     <div class="course-card" data-status="${c.status || 'active'}" data-id="${c.id}">
-      <button class="course-delete-btn" title="Delete" onclick="confirmDelete(${c.id},event)">✕</button>
+      <button class="course-delete-btn" title="Delete" onclick="confirmDelete(${idAttr},event)">✕</button>
       <div class="course-image" style="background:${colorFor(c.id)};position:relative;">
         <span style="position:absolute;bottom:12px;left:14px;">
           <span class="file-type-badge ${ft.badge}">${ft.label}</span>
@@ -298,10 +363,10 @@ function renderGrid(courses) {
           </div>
         </div>
         <div class="course-actions">
-          <button class="course-btn course-btn-primary" onclick="openReviewer(${c.id})">
+          <button class="course-btn course-btn-primary" onclick="openReviewer(${idAttr})">
             ${ft.icon} Study / Review
           </button>
-          <button class="course-btn course-btn-outline" onclick="confirmDelete(${c.id},event)">Delete</button>
+          <button class="course-btn course-btn-outline" onclick="confirmDelete(${idAttr},event)">Delete</button>
         </div>
       </div>
     </div>`;
@@ -312,9 +377,11 @@ function renderList(courses) {
   const list = document.getElementById('coursesList');
   if (!courses.length) { list.innerHTML = ''; return; }
 
+  /* FIX 3: stringify id in onclick so string IDs like 'stem-1' are passed correctly */
   list.innerHTML = courses.map(c => {
     const ft  = fileTypeInfo(c.fileName);
     const pct = c.progress || 0;
+    const idAttr = JSON.stringify(String(c.id));
     return `
     <div class="course-list-item" data-status="${c.status || 'active'}" data-id="${c.id}">
       <div class="course-list-icon" style="background:${colorFor(c.id)};">${ft.icon}</div>
@@ -331,8 +398,8 @@ function renderList(courses) {
         <div class="course-list-pct">${pct}%</div>
       </div>
       <div class="course-list-actions">
-        <button class="course-list-btn" onclick="openReviewer(${c.id})">Study</button>
-        <button class="course-list-btn" style="color:var(--error);" onclick="confirmDelete(${c.id},event)">✕</button>
+        <button class="course-list-btn" onclick="openReviewer(${idAttr})">Study</button>
+        <button class="course-list-btn" style="color:var(--error);" onclick="confirmDelete(${idAttr},event)">✕</button>
       </div>
     </div>`;
   }).join('');
@@ -449,8 +516,18 @@ function readFileAsBase64(file) {
 }
 
 /* ── Delete ── */
+/* FIX 1: removed the stray top-level block that was running outside any function.
+   The built-in guard is now correctly inside confirmDelete below. */
 function confirmDelete(id, e) {
   if (e) e.stopPropagation();
+
+  /* FIX 2 (guard): prevent deletion of built-in courses */
+  const course = allCourses.find(c => String(c.id) === String(id));
+  if (course?.builtIn) {
+    showToast('Not allowed', 'Built-in courses cannot be deleted.', 'error');
+    return;
+  }
+
   pendingDeleteId = id;
   document.getElementById('deleteConfirm').classList.add('active');
 }
@@ -465,7 +542,17 @@ async function openReviewer(id) {
   currentCard      = 0;
   quizAnswered     = {};
 
-  const course = await dbGet(id);
+  /* FIX 2: declare course before using it, then handle built-in check */
+  let course = allCourses.find(c => String(c.id) === String(id));
+
+  if (course?.builtIn) {
+    window.open('../modules/' + course.fileName, '_blank');
+    return;
+  }
+
+  /* load full data (including fileData) from IndexedDB for user courses */
+  course = await dbGet(id);
+
   if (!course) return;
 
   /* header */
@@ -508,7 +595,7 @@ async function openReviewer(id) {
       <div class="ai-loading">
         <div style="font-size:32px;">⚠️</div>
         <div class="ai-loading-text">Could not generate content. Check your connection and try again.</div>
-        <button class="btn btn-outline" style="margin-top:12px;" onclick="openReviewer(${id})">Retry</button>
+        <button class="btn btn-outline" style="margin-top:12px;" onclick="openReviewer(${JSON.stringify(String(id))})">Retry</button>
       </div>`;
   }
 }
@@ -904,3 +991,167 @@ function setupNav() {
       document.getElementById('userDropdown').classList.remove('open');
   });
 }
+
+  /* ═══════════════════════════════════════════════
+     built in modules
+  ═══════════════════════════════════════════════ */
+
+  const BUILTIN_MODULES = [
+    { 
+      title: "Earth Science 1",       
+      meta: "PDF · 1.44 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_Earth_Science_1.pdf" 
+    },
+
+    { 
+      title: "Earth Science 2",       
+      meta: "PDF · 2.08 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_Earth_Science_2.pdf" 
+    },
+
+    { 
+      title: "General Biology 1",     
+      meta: "PDF · 2.30 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_General_Biology_1.pdf" 
+    },
+
+    { 
+      title: "General Biology 2",     
+      meta: "PDF · 1.96 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_General_Biology_2.pdf" 
+    },
+
+    { 
+      title: "General Chemistry 1",   
+      meta: "PDF · 1.23 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_General_Chemistry_1.pdf" 
+    },
+
+    { 
+      title: "General Chemistry 2",   
+      meta: "PDF · 1.77 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDfs/STEM/STEM_General_Chemistry_2.pdf" 
+    },
+
+    { 
+      title: "General Mathematics 1", 
+      meta: "PDF · 1.34 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_General_Mathematics_1.pdf" 
+    },
+
+    { 
+      title: "General Mathematics 2", 
+      meta: "PDF · 1.23 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_General_Mathematics_2.pdf" 
+    },
+
+    { 
+      title: "General Physics 1",     
+      meta: "PDF · 2.46 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_General_Physics_1.pdf" 
+    },
+
+    { 
+      title: "General Physics 2",     
+      meta: "PDF · 1.86 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_General_Physics_2.pdf" 
+    },
+
+    { 
+      title: "Pre-Calculus 1",        
+      meta: "PDF · 1.87 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_Pre-Calculus_1.pdf" 
+    },
+
+    { 
+      title: "Pre-Calculus 2",        
+      meta: "PDF · 1.54 MB", 
+      tag: "Lecture", 
+      strand: "STEM", 
+      pdf: "../PDFs/STEM/STEM_Pre-Calculus_2.pdf" 
+    },
+  ];
+
+  let builtinOpen   = true;
+  let activeStrand  = 'all';
+
+  const openArrowSVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+  function renderBuiltinCards() {
+    const grid = document.getElementById('builtinGrid');
+    const filtered = activeStrand === 'all'
+      ? BUILTIN_MODULES
+      : BUILTIN_MODULES.filter(m => m.strand === activeStrand);
+
+    document.getElementById('builtinCount').textContent =
+      filtered.length + ' module' + (filtered.length !== 1 ? 's' : '');
+
+    if (!filtered.length) {
+      grid.innerHTML = `<div style="grid-column:1/-1;padding:32px;text-align:center;color:var(--text-muted);font-size:13px;">No modules found for this strand.</div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map((m, i) => `
+      <a class="builtin-card"
+         href="../modules/${m.pdf}"
+         target="_blank"
+         rel="noopener noreferrer"
+         style="animation-delay:${i * 0.04}s"
+         title="Open ${m.title}">
+        <div class="builtin-card-top">
+          <div class="builtin-card-icon">🗎</div>
+          <span class="builtin-pdf-badge">PDF</span>
+        </div>
+        <div class="builtin-card-title">${m.title}</div>
+        <div class="builtin-card-meta">
+          <span class="builtin-card-tag">${m.tag}</span>
+          <span class="builtin-card-open">${openArrowSVG} Open</span>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  function toggleBuiltin() {
+    builtinOpen = !builtinOpen;
+    const collapsible = document.getElementById('builtinCollapsible');
+    const btn         = document.getElementById('builtinToggleBtn');
+
+    collapsible.classList.toggle('collapsed', !builtinOpen);
+    btn.classList.toggle('collapsed', !builtinOpen);
+    btn.innerHTML = `<span class="chevron" style="transition:transform 0.3s ease;transform:${builtinOpen ? 'rotate(0deg)' : 'rotate(-90deg)'}">▾</span> ${builtinOpen ? 'Hide modules' : 'Show modules'}`;
+  }
+
+  function setStrand(strand) {
+    activeStrand = strand;
+    document.querySelectorAll('.strand-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.strand === strand);
+    });
+    renderBuiltinCards();
+  }
+
+  /* Render on load */
+  document.addEventListener('DOMContentLoaded', () => {
+    renderBuiltinCards();
+  });
