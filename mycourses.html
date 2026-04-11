@@ -4,14 +4,286 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="Uplogo.ico">
+  <link rel="icon" type="image/png" href="../images/Uplogo.ico">
   <title>My Courses — UpLift</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="mycourses.css">
-  </head>
-  <body>
+
+  <style>
+    /* ── Built-in Modules Section ── */
+    .builtin-section {
+      margin-bottom: 36px;
+      animation: fadeInUp 0.5s ease both;
+    }
+
+    .builtin-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .builtin-section-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .builtin-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+    }
+
+    .builtin-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .builtin-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      background: transparent;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .builtin-toggle-btn:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .builtin-toggle-btn .chevron {
+      transition: transform 0.3s ease;
+      font-size: 10px;
+      display: inline-block;
+    }
+
+    .builtin-toggle-btn.collapsed .chevron {
+      transform: rotate(-90deg);
+    }
+
+    .builtin-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 20px;
+    }
+
+    /* Collapsible wrapper */
+    .builtin-collapsible {
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+      max-height: 2000px;
+      opacity: 1;
+    }
+
+    .builtin-collapsible.collapsed {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    /* Strand tabs */
+    .strand-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .strand-tab {
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .strand-tab:hover {
+      border-color: var(--border-light);
+      color: var(--text-secondary);
+    }
+
+    .strand-tab.active {
+      background: var(--bg-tertiary);
+      border-color: var(--border-light);
+      color: var(--text-primary);
+    }
+
+    /* Built-in module grid */
+    .builtin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    /* Built-in module card */
+    .builtin-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .builtin-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--text-muted), var(--accent));
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .builtin-card:hover {
+      border-color: var(--border-light);
+      background: var(--bg-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .builtin-card:hover::before {
+      opacity: 1;
+    }
+
+    .builtin-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .builtin-card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .builtin-card:hover .builtin-card-icon {
+      background: var(--bg-card);
+      border-color: var(--border-light);
+    }
+
+    .builtin-pdf-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(239,68,68,0.12);
+      color: #ef4444;
+    }
+
+    .builtin-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .builtin-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .builtin-card-tag {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .builtin-card-open {
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      transition: color var(--transition);
+    }
+
+    .builtin-card:hover .builtin-card-open {
+      color: var(--text-primary);
+    }
+
+    /* separator between built-in and user courses */
+    .user-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .user-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .user-section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    @media (max-width: 768px) {
+      .builtin-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
 
 <div class="toast-container" id="toastContainer"></div>
 
@@ -117,28 +389,41 @@
     <nav class="sidebar-nav">
       <div class="sidebar-label">Main</div>
       <a href="dashboard.html" class="nav-item">
-        <span class="nav-icon">⌂</span><span class="nav-text">Home</span>
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">Home</span>
       </a>
+
       <div class="sidebar-divider"></div>
       <div class="sidebar-label">Learning</div>
-      <a href="mycourses.html" class="nav-item active">
-        <span class="nav-icon">✎</span><span class="nav-text">My Courses</span>
+
+      <a href="mycourses.html" class="nav-item">
+        <span class="nav-icon">✎</span>
+        <span class="nav-text">My Courses</span>
       </a>
+
       <a href="dashboard.html" class="nav-item">
-        <span class="nav-icon">⏱</span><span class="nav-text">Deadlines</span>
+        <span class="nav-icon">🕛</span>
+        <span class="nav-text">Deadlines</span>
       </a>
+
       <a href="progress.html" class="nav-item">
-        <span class="nav-icon">◎</span><span class="nav-text">Progress</span>
+        <span class="nav-icon">📊</span>
+        <span class="nav-text">Progress</span>
       </a>
+
       <div class="sidebar-divider"></div>
       <div class="sidebar-label">Content</div>
+
       <a href="blog.html" class="nav-item">
-        <span class="nav-icon">✍︎</span><span class="nav-text">Blogs</span>
+        <span class="nav-icon">✍🏻</span>
+        <span class="nav-text">Blogs</span>
       </a>
+
       <div class="sidebar-divider"></div>
       <div class="sidebar-label">Social</div>
-        <a href="social.html" class="nav-item">
-        <span class="nav-icon">🗪</span>
+
+      <a href="social.html" class="nav-item">
+        <span class="nav-icon">💬</span>
         <span class="nav-text">Community</span>
       </a>
 
@@ -154,6 +439,51 @@
       </div>
       <h1>My Courses</h1>
       <p>Upload your notes, PDFs, or slides — and let AI turn them into reviewers, flashcards & quizzes.</p>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         BUILT-IN MODULES SECTION
+    ══════════════════════════════════════════ -->
+    <div class="builtin-section">
+
+      <div class="builtin-section-header">
+        <div class="builtin-section-left">
+          <span class="builtin-section-title">Course Modules</span>
+          <span class="builtin-badge" id="builtinCount">12 modules</span>
+        </div>
+        <button class="builtin-toggle-btn" id="builtinToggleBtn" onclick="toggleBuiltin()">
+          <span class="chevron">▾</span>
+          Hide modules
+        </button>
+      </div>
+
+      <div class="builtin-divider"></div>
+
+      <!-- Strand tabs -->
+      <div class="strand-tabs" id="strandTabs">
+        <button class="strand-tab active" data-strand="all" onclick="setStrand('all')">All</button>
+        <button class="strand-tab" data-strand="STEM" onclick="setStrand('STEM')">STEM</button>
+        <!-- Add more strands here as needed, e.g.:
+        <button class="strand-tab" data-strand="ABM" onclick="setStrand('ABM')">ABM</button>
+        <button class="strand-tab" data-strand="HUMSS" onclick="setStrand('HUMSS')">HUMSS</button>
+        -->
+      </div>
+
+      <!-- Collapsible grid -->
+      <div class="builtin-collapsible" id="builtinCollapsible">
+        <div class="builtin-grid" id="builtinGrid">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         USER-UPLOADED COURSES
+    ══════════════════════════════════════════ -->
+    <div class="user-section-header">
+      <span class="user-section-title">My Uploads</span>
+      <div class="user-section-line"></div>
     </div>
 
     <div class="filter-bar">
