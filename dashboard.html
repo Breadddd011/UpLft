@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- PDF.js for text extraction -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="Uplogo.ico">
@@ -10,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body>
 
@@ -88,7 +90,7 @@
         <span class="nav-text">My courses</span>
       </a>
 
-      <a href="#deadlines" class="nav-item" onclick="smoothScroll('deadlines',event)">
+      <a href="deadline.html" class="nav-item">
         <span class="nav-icon">🕛</span>
         <span class="nav-text">Deadlines</span>
       </a>
@@ -141,32 +143,32 @@
           <span class="stat-label">Courses</span>
           <span class="stat-icon">✎</span>
         </div>
-        <div class="stat-number">5</div>
-        <div class="stat-change up">+2 new this week</div>
+        <div class="stat-number" id="statCourses">0</div>
+        <div class="stat-change up" id="statCoursesChange">+0 new this week</div>
       </div>
       <div class="stat-card completed">
         <div class="stat-top">
           <span class="stat-label">Completed</span>
           <span class="stat-icon">✔</span>
         </div>
-        <div class="stat-number">12</div>
-        <div class="stat-change up">+3 this week</div>
+        <div class="stat-number" id="statCompleted">0</div>
+        <div class="stat-change up" id="statCompletedChange">+0 this week</div>
       </div>
       <div class="stat-card study-hours">
         <div class="stat-top">
           <span class="stat-label">Study Hours</span>
           <span class="stat-icon">⏱</span>
         </div>
-        <div class="stat-number">24</div>
-        <div class="stat-change up">+4h this week</div>
+        <div class="stat-number" id="statStudyHours">0</div>
+        <div class="stat-change up" id="statStudyHoursChange">+0h this week</div>
       </div>
       <div class="stat-card streak">
         <div class="stat-top">
           <span class="stat-label">Streak</span>
           <span class="stat-icon">🔥</span>
         </div>
-        <div class="stat-number">7</div>
-        <div class="stat-change">days in a row</div>
+        <div class="stat-number" id="statStreak">0</div>
+        <div class="stat-change" id="statStreakChange">Start your streak today!</div>
       </div>
     </div>
 
@@ -179,54 +181,11 @@
           <h2>My Courses</h2>
           <a href="mycourses.html" class="section-link">View all →</a>
         </div>
-        <div class="courses-list">
-          <div class="course-row" onclick="window.location.href='courses2.html'">
-            <div class="course-thumb" style="background:linear-gradient(135deg,#1a1a2e,#27272a)">🏥</div>
-            <div class="course-info">
-              <div class="course-name">Health Policy 101</div>
-              <div class="course-sub">Health</div>
-            </div>
-            <div class="course-progress-wrap">
-              <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
-              <div class="progress-pct">60%</div>
-            </div>
-            <button class="course-continue-btn">Continue</button>
-          </div>
-          <div class="course-row" onclick="window.location.href='courses2.html'">
-            <div class="course-thumb" style="background:linear-gradient(135deg,#0a0a1a,#1a1a2e)">📐</div>
-            <div class="course-info">
-              <div class="course-name">Advanced Calculus</div>
-              <div class="course-sub">Mathematics</div>
-            </div>
-            <div class="course-progress-wrap">
-              <div class="progress-bar"><div class="progress-fill" style="width:35%"></div></div>
-              <div class="progress-pct">35%</div>
-            </div>
-            <button class="course-continue-btn">Continue</button>
-          </div>
-          <div class="course-row" onclick="window.location.href='courses2.html'">
-            <div class="course-thumb" style="background:linear-gradient(135deg,#1a0a0a,#2e1a1a)">📖</div>
-            <div class="course-info">
-              <div class="course-name">English Literature</div>
-              <div class="course-sub">English</div>
-            </div>
-            <div class="course-progress-wrap">
-              <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
-              <div class="progress-pct">80%</div>
-            </div>
-            <button class="course-continue-btn">Continue</button>
-          </div>
-          <div class="course-row" onclick="window.location.href='courses2.html'">
-            <div class="course-thumb" style="background:linear-gradient(135deg,#0a1a0a,#1a2e1a)">🧬</div>
-            <div class="course-info">
-              <div class="course-name">Biology: Cell & Genetics</div>
-              <div class="course-sub">Science</div>
-            </div>
-            <div class="course-progress-wrap">
-              <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
-              <div class="progress-pct">10%</div>
-            </div>
-            <button class="course-continue-btn">Continue</button>
+        <div class="courses-list" id="coursesList">
+          <!-- Dynamic content -->
+          <div style="padding:32px;text-align:center;color:var(--text-muted);font-size:13px;">
+            <div style="font-size:32px;margin-bottom:8px;">📂</div>
+            Loading courses...
           </div>
         </div>
       </div>
@@ -236,50 +195,10 @@
         <div class="section-head upcoming-deadlines-head">
           <h2>Upcoming Deadlines</h2>
         </div>
-        <div class="deadlines-list">
-          <div class="deadline-row">
-            <div class="deadline-date">
-              <div class="deadline-day">26</div>
-              <div class="deadline-month">Jan</div>
-            </div>
-            <div class="deadline-info">
-              <div class="deadline-title">Policy Presentation</div>
-              <div class="deadline-desc">Submit slides by midnight</div>
-            </div>
-            <span class="deadline-tag urgent">Urgent</span>
-          </div>
-          <div class="deadline-row">
-            <div class="deadline-date">
-              <div class="deadline-day">02</div>
-              <div class="deadline-month">Feb</div>
-            </div>
-            <div class="deadline-info">
-              <div class="deadline-title">Calculus Problem Set</div>
-              <div class="deadline-desc">Chapter 5 — 20 problems</div>
-            </div>
-            <span class="deadline-tag soon">Soon</span>
-          </div>
-          <div class="deadline-row">
-            <div class="deadline-date">
-              <div class="deadline-day">10</div>
-              <div class="deadline-month">Feb</div>
-            </div>
-            <div class="deadline-info">
-              <div class="deadline-title">Literature Essay</div>
-              <div class="deadline-desc">Shakespeare analysis, 1500 words</div>
-            </div>
-            <span class="deadline-tag normal">Upcoming</span>
-          </div>
-          <div class="deadline-row">
-            <div class="deadline-date">
-              <div class="deadline-day">18</div>
-              <div class="deadline-month">Feb</div>
-            </div>
-            <div class="deadline-info">
-              <div class="deadline-title">Biology Lab Report</div>
-              <div class="deadline-desc">Microscopy observations</div>
-            </div>
-            <span class="deadline-tag normal">Upcoming</span>
+        <div class="deadlines-list" id="deadlinesList">
+          <!-- Dynamic content -->
+          <div style="padding:24px;text-align:center;color:var(--text-muted);font-size:13px;">
+            Loading deadlines...
           </div>
         </div>
       </div>
@@ -294,41 +213,10 @@
         <div class="section-head recent-activity-head">
           <h2>Recent Activity</h2>
         </div>
-        <div class="activity-list">
-          <div class="activity-item">
-            <div class="activity-dot green"></div>
-            <div class="activity-text">
-              Completed lesson <strong>Policy Analysis Methods</strong> in Health Policy 101
-            </div>
-            <div class="activity-time">2h ago</div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot blue"></div>
-            <div class="activity-text">
-              Started <strong>Advanced Calculus</strong> — Limits and Continuity
-            </div>
-            <div class="activity-time">Yesterday</div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot yellow"></div>
-            <div class="activity-text">
-              Deadline reminder: <strong>Policy Presentation</strong> due in 3 days
-            </div>
-            <div class="activity-time">Yesterday</div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot green"></div>
-            <div class="activity-text">
-              Completed <strong>Shakespeare Deep Dive</strong> in English Literature
-            </div>
-            <div class="activity-time">2 days ago</div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot white"></div>
-            <div class="activity-text">
-              Enrolled in <strong>Biology: Cell & Genetics</strong>
-            </div>
-            <div class="activity-time">3 days ago</div>
+        <div class="activity-list" id="activityList">
+          <!-- Dynamic content -->
+          <div style="padding:24px;text-align:center;color:var(--text-muted);font-size:13px;">
+            Loading activity...
           </div>
         </div>
       </div>
@@ -338,52 +226,8 @@
         <div class="section-head subject-progress-head">
           <h2>Subject Progress</h2>
         </div>
-        <div class="subjects-list">
-          <div>
-            <div class="subject-top">
-              <span class="subject-name">English</span>
-              <span class="subject-pct">80%</span>
-            </div>
-            <div class="subject-bar">
-              <div class="subject-fill" style="width:80%; background:#d4d4d8;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="subject-top">
-              <span class="subject-name">Health</span>
-              <span class="subject-pct">60%</span>
-            </div>
-            <div class="subject-bar">
-              <div class="subject-fill" style="width:60%; background:#a1a1aa;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="subject-top">
-              <span class="subject-name">Mathematics</span>
-              <span class="subject-pct">35%</span>
-            </div>
-            <div class="subject-bar">
-              <div class="subject-fill" style="width:35%; background:#71717a;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="subject-top">
-              <span class="subject-name">Science</span>
-              <span class="subject-pct">10%</span>
-            </div>
-            <div class="subject-bar">
-              <div class="subject-fill" style="width:10%; background:#52525b;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="subject-top">
-              <span class="subject-name">History</span>
-              <span class="subject-pct">0%</span>
-            </div>
-            <div class="subject-bar">
-              <div class="subject-fill" style="width:0%; background:#3f3f46;"></div>
-            </div>
-          </div>
+        <div class="subjects-list" id="subjectsList">
+          <!-- Dynamic content -->
         </div>
       </div>
 
@@ -392,6 +236,6 @@
   </main>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
-<script src="dashboard.js"></script>
+<script src="../js/dashboard.js"></script>
 </body>
 </html>
