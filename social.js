@@ -1,7 +1,4 @@
-// social.js — UpLift Social Page with Supabase Database Integration
-// FIXED VERSION - Emergency patch
-
-// ── Supabase Setup ──
+// ── Supabase Setup lol ──
 const { createClient } = supabase;
 const client = createClient(
   'https://tiyapgnehlwbhhzqqumq.supabase.co',
@@ -56,19 +53,21 @@ window.addEventListener('DOMContentLoaded', async () => {
       .eq('id', user.id)
       .maybeSingle();
 
+    console.log('User profile:', profile);
+
     if (profile?.username) {
       username = profile.username;
       state.currentUser.name = username;
       state.currentUser.initials = username.charAt(0).toUpperCase();
+      state.currentUser.avatar = profile.avatar_url || null;
       applyUserIdentity(username, user.email, profile.avatar_url || null);
     } else if (profile?.avatar_url) {
+      state.currentUser.avatar = profile.avatar_url;
       applyUserIdentity(username, user.email, profile.avatar_url);
     }
 
-    // Load user's liked posts and bookmarks
+    // Load interactions and posts AFTER profile is resolved
     await loadUserInteractions(user.id);
-
-    // Load posts from database
     await loadPosts();
 
     // Load notifications
@@ -123,22 +122,37 @@ async function loadPosts() {
       return;
     }
 
-    // Transform database posts to match our format
-    state.posts = posts.map(post => ({
-      id: post.id,
-      author: post.user_id === state.currentUser.id ? state.currentUser.name : 'User',
-      initials: (post.user_id === state.currentUser.id ? state.currentUser.name : 'U').charAt(0).toUpperCase(),
-      content: post.content,
-      category: post.category,
-      timestamp: post.created_at,
-      likes: post.likes || 0,
-      bookmarks: post.bookmarks || 0,
-      comments: [],
-      commentCount: 0,
-      liked: state.likedPosts.has(post.id),
-      bookmarked: state.bookmarkedPosts.has(post.id),
-      userId: post.user_id
-    }));
+    // Fetch profiles for all post authors in one query
+    const userIds = [...new Set(posts.map(p => String(p.user_id)))];
+    const { data: profiles } = await client
+      .from('profiles')
+      .select('id, username, avatar_url')
+      .in('id', userIds);
+
+    const profileMap = Object.fromEntries((profiles || []).map(p => [String(p.id), p]));
+
+    state.posts = posts.map(post => {
+      const profile = profileMap[String(post.user_id)];
+      const authorName = profile?.username || 'User';
+      const avatarUrl = profile?.avatar_url || null;
+
+      return {
+        id: post.id,
+        author: authorName,
+        avatar_url: avatarUrl,
+        initials: authorName.charAt(0).toUpperCase(),
+        content: post.content,
+        category: post.category,
+        timestamp: post.created_at,
+        likes: post.likes || 0,
+        bookmarks: post.bookmarks || 0,
+        comments: [],
+        commentCount: 0,
+        liked: state.likedPosts.has(post.id),
+        bookmarked: state.bookmarkedPosts.has(post.id),
+        userId: post.user_id
+      };
+    });
 
     postManager.render();
     postManager.updateStats();
@@ -161,17 +175,32 @@ async function loadCommentsForPost(postId) {
       return;
     }
 
+    // Fetch profiles for all commenters in one query
+    const userIds = [...new Set(comments.map(c => String(c.user_id)))];
+    const { data: profiles } = await client
+      .from('profiles')
+      .select('id, username, avatar_url')
+      .in('id', userIds);
+
+    const profileMap = Object.fromEntries((profiles || []).map(p => [String(p.id), p]));
+
     const post = state.posts.find(p => p.id === postId);
     if (post) {
-      post.comments = comments.map(c => ({
-        id: c.id,
-        author: c.user_id === state.currentUser.id ? state.currentUser.name : 'User',
-        initials: 'U',
-        text: c.text,
-        time: formatTime(c.created_at),
-        likes: c.likes || 0,
-        timestamp: new Date(c.created_at).getTime()
-      }));
+      post.comments = comments.map(c => {
+        const profile = profileMap[String(c.user_id)];
+        const username = profile?.username || 'User';
+        return {
+          id: c.id,
+          author: username,
+          initials: username.charAt(0).toUpperCase(),
+          avatar_url: profile?.avatar_url || null,
+          text: c.text,
+          time: formatTime(c.created_at),
+          likes: c.likes || 0,
+          userId: c.user_id,
+          timestamp: new Date(c.created_at).getTime()
+        };
+      });
     }
   } catch (err) {
     console.error('Error in loadCommentsForPost:', err);
@@ -433,7 +462,9 @@ const postManager = {
         <div class="post-header">
           <div class="post-author">
             <div class="author-avatar" style="background:linear-gradient(135deg,${c}22,${c}44)">
-              ${post.initials}
+              ${post.avatar_url
+                ? `<img src="${post.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`
+                : post.initials}
             </div>
             <div class="author-details">
               <span class="author-name">${escapeHtml(post.author)}</span>
@@ -454,9 +485,9 @@ const postManager = {
         </div>
         <div class="post-content">${escapeHtml(post.content)}</div>
         <div class="post-stats-bar">
-          <div class="post-stat">❤️ <span>${post.likes}</span> likes</div>
-          <div class="post-stat">💬 <span>${post.commentCount || post.comments.length}</span> comments</div>
-          <div class="post-stat">🔖 <span>${post.bookmarks}</span> saved</div>
+          <div class="post-stat">♡ <span>${post.likes}</span> likes</div>
+          <div class="post-stat">🗨 <span>${post.commentCount || post.comments.length}</span> comments</div>
+          <div class="post-stat">⛉ <span>${post.bookmarks}</span> saved</div>
         </div>
         <div class="post-actions-bar">
           <button class="post-btn ${post.liked ? 'liked' : ''}" data-action="like" data-post-id="${post.id}">
@@ -500,14 +531,12 @@ const postManager = {
 
     try {
       if (isLiked) {
-        // Unlike
         await client.from('post_likes').delete().eq('post_id', postId).eq('user_id', state.currentUser.id);
         state.likedPosts.delete(postId);
         post.liked = false;
         post.likes = Math.max(0, post.likes - 1);
         await client.from('posts').update({ likes: post.likes }).eq('id', postId);
       } else {
-        // Like
         await client.from('post_likes').insert({ post_id: postId, user_id: state.currentUser.id });
         state.likedPosts.add(postId);
         post.liked = true;
@@ -576,7 +605,11 @@ const postManager = {
 
     document.getElementById('originalPost').innerHTML = `
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
-        <div class="comment-avatar">${post.initials}</div>
+        <div class="comment-avatar" style="${post.avatar_url ? 'padding:0;overflow:hidden;' : ''}">
+          ${post.avatar_url
+            ? `<img src="${post.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`
+            : post.initials}
+        </div>
         <div>
           <div style="font-size:13px;font-weight:700;color:var(--text-primary)">${escapeHtml(post.author)}</div>
           <div style="font-size:11px;color:var(--text-muted)">${formatTime(post.timestamp)}</div>
@@ -597,7 +630,11 @@ const postManager = {
     }
     list.innerHTML = post.comments.map(c => `
       <div class="comment">
-        <div class="comment-avatar">${c.initials}</div>
+        <div class="comment-avatar" style="${c.avatar_url ? 'padding:0;overflow:hidden;' : ''}">
+          ${c.avatar_url
+            ? `<img src="${c.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`
+            : c.initials}
+        </div>
         <div class="comment-body">
           <div class="comment-header">
             <span class="comment-author">${escapeHtml(c.author)}</span>
@@ -633,9 +670,11 @@ const postManager = {
           id: comment.id,
           author: state.currentUser.name,
           initials: state.currentUser.initials,
+          avatar_url: state.currentUser.avatar,  // ← uses real avatar
           text: comment.text,
           time: 'Just now',
           likes: 0,
+          userId: state.currentUser.id,
           timestamp: Date.now()
         });
         post.commentCount = (post.commentCount || 0) + 1;
@@ -656,13 +695,13 @@ const postManager = {
     const content = document.getElementById('postTextarea').value.trim();
     const category = document.getElementById('postCategory').value;
 
-    if (!content) { 
-      toast.error('Error', 'Please write something first'); 
-      return; 
+    if (!content) {
+      toast.error('Error', 'Please write something first');
+      return;
     }
-    if (content.length < 10) { 
-      toast.warning('Too short', 'Post must be at least 10 characters'); 
-      return; 
+    if (content.length < 10) {
+      toast.warning('Too short', 'Post must be at least 10 characters');
+      return;
     }
 
     try {
@@ -682,6 +721,7 @@ const postManager = {
         id: post.id,
         author: state.currentUser.name,
         initials: state.currentUser.initials,
+        avatar_url: state.currentUser.avatar,  // ← uses real avatar
         content: post.content,
         category: post.category,
         timestamp: post.created_at,
@@ -719,9 +759,9 @@ const postManager = {
       .filter(p => p.userId === userId)
       .reduce((a, p) => a + p.likes, 0);
 
-    const el = (id, val) => { 
-      const e = document.getElementById(id); 
-      if (e) e.textContent = val; 
+    const el = (id, val) => {
+      const e = document.getElementById(id);
+      if (e) e.textContent = val;
     };
     el('userPostsCount', posts);
     el('userCommentsCount', comments);
@@ -764,9 +804,9 @@ const app = {
     });
     document.getElementById('submitComment')?.addEventListener('click', () => postManager.addComment());
     document.getElementById('commentInput')?.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) { 
-        e.preventDefault(); 
-        postManager.addComment(); 
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        postManager.addComment();
       }
     });
 
