@@ -8,13 +8,14 @@
   
   <title>UpLift - Elevate Your Learning</title>
   
-  <link rel="icon" type="image/png" href="Uplogo.ico">
-  <link rel="stylesheet" href="style.css"> <!-- you need ../ to climb back up before you can access sibling folders -->
+  <link rel="icon" type="image/png" href="../images/Uplogo.ico">
+  <link rel="stylesheet" href="../css/style.css"> <!-- you need ../ to climb back up before you can access sibling folders -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -23,12 +24,6 @@
   <!-- nav -->
   <nav id="navbar">
     <div class="logo">UpLift</div>
-
-    <ul class="nav-links" id="navMenu">
-      <li><a href="#home" class="active">Home</a></li>
-      <li><a href="courses.html">Courses</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
 
       <div class="mobile-auth-buttons">
         <button class="btn btn-outline" onclick="openLoginModal()">Log In</button>
@@ -50,7 +45,7 @@
     <div class="hero-content">
       <div class="hero-badge">
         <span>✦</span>
-        <span>Trusted by 200+ students worldwide (?)</span>
+        <span>Trusted by 200+ students (?)</span>
       </div>
       <h1>
         Elevate Your
@@ -127,44 +122,44 @@
     </div>
 
     <div class="courses-grid">
-      <div class="course-card reveal" onclick="showCourse('Advanced Mathematics')">
+      <div class="course-card reveal">
         <div class="course-badge">Popular</div>
         <div class="course-image">
-          <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&q=80" alt="Advanced Mathematics">
+          <img src="https://images.unsplash.com/photo-1663427929917-333d88949f7a?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Science Essentials">
         </div>
         <div class="course-content">
-          <div class="course-category">Mathematics</div>
-          <h3>Advanced Mathematics</h3>
-          <p>Master calculus, algebra, and geometry with interactive lessons and practice problems.</p>
+          <div class="course-category">Science</div>
+          <h3>Earth Science</h3>
+          <p>Earth science is the study of the Earth, its processes, and its components, encompassing various fields such as geology, meteorology, oceanography, and environmental science.</p>
           <div class="course-meta">
             <span>◷ 45 Lessons</span>
           </div>
         </div>
       </div>
 
-      <div class="course-card reveal" onclick="showCourse('Science Essentials')">
+      <div class="course-card reveal">
         <div class="course-image">
           <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&q=80" alt="Science Essentials">
         </div>
         <div class="course-content">
           <div class="course-category">Science</div>
-          <h3>Science Essentials</h3>
-          <p>Explore physics, chemistry, and biology through hands-on virtual experiments.</p>
+          <h3>General Biology</h3>
+          <p>Biology is a broad natural science that encompasses a wide range of fields and unifying principles that explain the structure, function, growth, origin, evolution, and distribution of life.</p>
           <div class="course-meta">
             <span>◷ 38 Lessons</span>
           </div>
         </div>
       </div>
 
-      <div class="course-card reveal" onclick="showCourse('English Literature')">
+      <div class="course-card reveal">
         <div class="course-badge">New</div>
         <div class="course-image">
-          <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80" alt="English Literature">
+          <img src="https://images.unsplash.com/photo-1648201637025-1c77b9be3013?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Mathematics">
         </div>
         <div class="course-content">
-          <div class="course-category">Literature</div>
-          <h3>English Literature</h3>
-          <p>Develop critical thinking and writing skills with classic and contemporary texts.</p>
+          <div class="course-category">Mathematics</div>
+          <h3>Pre-Calculus</h3>
+          <p>Precalculus is a foundational math course that prepares students for calculus by covering algebra, trigonometry, and advanced mathematical concepts.</p>
           <div class="course-meta">
             <span>◷ 32 Lessons</span>
           </div>
@@ -275,6 +270,6 @@
     </div>
   </div>
 
-<script src="script.js"></script>
+<script src="../js/script.js"></script> <!-- you need ../ to climb back up before you can access sibling folders -->
 </body>
 </html>
