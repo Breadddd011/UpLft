@@ -670,7 +670,7 @@ const postManager = {
           id: comment.id,
           author: state.currentUser.name,
           initials: state.currentUser.initials,
-          avatar_url: state.currentUser.avatar,  // ← uses real avatar
+          avatar_url: state.currentUser.avatar,  // ← uses real avatar btw
           text: comment.text,
           time: 'Just now',
           likes: 0,
@@ -699,8 +699,8 @@ const postManager = {
       toast.error('Error', 'Please write something first');
       return;
     }
-    if (content.length < 10) {
-      toast.warning('Too short', 'Post must be at least 10 characters');
+    if (content.length < 3) {
+      toast.warning('Too short', 'Post must be at least 3 characters');
       return;
     }
 
@@ -846,5 +846,5 @@ const app = {
   }
 };
 
-// Expose for debugging
+// Expose for debugging (?)
 window.socialApp = { state, postManager, toast, client };
