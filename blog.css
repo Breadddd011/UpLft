@@ -38,11 +38,18 @@
   --nav-h: 60px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+html { 
+  scroll-behavior: smooth; 
+}
 
 body {
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, "Noto Emoji", sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -51,7 +58,9 @@ body {
   min-height: 100vh;
 }
 
-::selection { background: rgba(255,255,255,0.15); }
+::selection { 
+  background: rgba(255,255,255,0.15); 
+}
 
 /*top nav */
 .top-nav {
@@ -86,7 +95,10 @@ body {
   transition: var(--transition);
   line-height: 1;
 }
-.menu-toggle:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.menu-toggle:hover { 
+  background: var(--bg-tertiary); 
+  color: var(--text-primary); 
+}
 
 .logo {
   font-size: 20px;
