@@ -1,8 +1,3 @@
-// ============================================
-// UpLift Dashboard — Full Supabase Sync
-// Uses custom_courses schema with PDF extraction
-// ============================================
-
 const { createClient } = supabase;
 const client = createClient(
   'https://tiyapgnehlwbhhzqqumq.supabase.co',
