@@ -4,312 +4,186 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="Uplogo.ico">
+  <link rel="icon" type="image/png" href="../images/Uplogo.ico">
   <title>Progress — UpLift</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="progress.css">
 <body>
-    <!-- top nav -->
-     <nav class="top-nav">
-        <div class="nav-left">
-            <button class="menu-toggle" id="menuToggle">☰</button>
-            <div class="logo">UpLift</div>
+
+<!-- top nav -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <div class="logo">UpLift</div>
+  </div>
+  <div class="nav-right">
+    <div class="notification-wrapper">
+      <button class="notif-btn" id="notifBtn">🕭
+        <span class="notif-badge" id="notifBadge"></span>
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-head">
+          <span>Notifications</span>
+          <button class="notif-mark-btn" id="markAllRead">Mark all read</button>
         </div>
-
-        <div class="nav-right">
-            <div class="notification-wrapper">
-                <button class="notif-btn" id="notifBtn">🔔
-                    <span class="notif-badge" id="notifBadge"></span>
-                </button>
-                <div class="notif-dropdown" id="notifDropdown">
-                    <div class="notif-head">
-                        <span>Notifications</span>
-                        <button class="notif-mark-btn" id="markAllRead">Mark all read</button>
-                    </div>
-                    <div class="notif-list" id="notifList">
-                        <div class="notif-empty">No notifications yet</div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-menu-wrapper">
-                <button class="user-btn" id="userMenuBtn">
-                    <div class="user-avatar" id="userAvatar">?</div>
-                    <span class="user-name" id="usernameDisplay">User</span>
-                    <span style="font-size:10px;color:var(--text-muted);">▾</span>
-                </button>
-                <div class="user-dropdown" id="userDropdown">
-                    <div class="user-dropdown-header">
-                        <div class="user-dropdown-avatar" id="userDropdownAvatar">?</div>
-                        <div>
-                            <div class="user-dropdown-name" id="userDropdownName">User</div>
-                            <div class="user-dropdown-email" id="userDropdownEmail"></div>
-                        </div>
-                    </div>
-                    <div class="user-dropdown-divider"></div>
-                    <a href="profile.html" class="user-dropdown-item">☻ &nbsp;Profile</a>
-                    <a href="#" class="user-dropdown-item">🌣 &nbsp;Settings</a>
-                    <a href="#" class="user-dropdown-item">🛠 &nbsp;Help & Support</a>
-                    <div class="user-dropdown-divider"></div>
-                    <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">➜] &nbsp;Logout</a>
-                </div>
-            </div>
-
+        <div class="notif-list" id="notifList">
+          <div class="notif-empty">No notifications yet</div>
         </div>
-     </nav>
+      </div>
+    </div>
+    <div class="user-menu-wrapper">
+      <button class="user-btn" id="userMenuBtn">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-name" id="usernameDisplay">User</span>
+        <span style="font-size:10px;color:var(--text-muted);">▾</span>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <div class="user-dropdown-avatar" id="userDropdownAvatar">?</div>
+          <div>
+            <div class="user-dropdown-name" id="userDropdownName">User</div>
+            <div class="user-dropdown-email" id="userDropdownEmail"></div>
+          </div>
+        </div>
+        <div class="user-dropdown-divider"></div>
+        <a href="profile.html" class="user-dropdown-item">☻ &nbsp;Profile</a>
+        <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">➜] &nbsp;Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
 
-     <!-- layout -->
-      <div class="layout">
+<!-- layout -->
+<div class="layout">
 
-        <!-- sidebar ヽ（≧□≦）ノ -->
-         <aside class="sidebar" id="sidebar">
-            <nav class="sidebar-nav">
-                <div class="sidebar-label">Main</div>
-                <a href="dashboard.html" class="nav-item" target="_self">
-                    <span class="nav-icon">⌂</span>
-                    <span class="nav-text">Home</span>
-                </a>
-                <div class="sidebar-divider"></div>
-                <div class="sidebar-label">Learning</div>
+  <!-- sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+      <div class="sidebar-label">Main</div>
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">🏠</span><span class="nav-text">Home</span>
+      </a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Learning</div>
+      <a href="mycourses.html" class="nav-item">
+        <span class="nav-icon">✎</span>
+        <span class="nav-text">My courses</span>
+      </a>
 
-                <a href="mycourses.html" class="nav-item">
-                    <span class="nav-icon">✎</span>
-                    <span class="nav-text">My courses</span>
-                </a>
+      <a href="deadline.html" class="nav-item">
+        <span class="nav-icon">🕛</span>
+        <span class="nav-text">Deadlines</span>
+      </a>
 
-                <a href="deadlines.html" class="nav-item"> <!-- no deadlines yet -->
-                    <span class="nav-icon">⏱</span>
-                    <span class="nav-text">Deadlines</span>
-                </a>
-                
-                <a href="progress.html" class="nav-item active">
-                    <span class="nav-icon">◎</span>
-                    <span class="nav-text">Progress</span>
-                </a>
+      <a href="progress.html" class="nav-item active">
+        <span class="nav-icon">📊</span>
+        <span class="nav-text">Progress</span>
+      </a>
 
-                <div class="sidebar-divider"></div>
-                <div class="sidebar-label">Content</div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Content</div>
 
-                <a href="blog.html" class="nav-item">
-                    <span class="nav-icon">✍︎</span>
-                    <span class="nav-text">Blogs</span>
-                </a>
+      <a href="blog.html" class="nav-item">
+        <span class="nav-icon">✍🏻</span>
+        <span class="nav-text">Blogs</span>
+      </a>
 
-                <div class="sidebar-divider"></div>
-                <div class="sidebar-label">Social</div>
-              
-                <a href="social.html" class="nav-item">
-                    <span class="nav-icon">🗪</span>
-                    <span class="nav-text">Community</span>
-                  </a>
+      <div class="sidebar-divider"></div>
 
-                <div class="sidebar-divider"></div>
-            </nav>
-         </aside>
+      <div class="sidebar-label">Social</div>
+        <a href="social.html" class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span class="nav-text">Community</span>
+      </a>
 
-         <!-- main -->
-          <main class="main-content" id="mainContent">
+    </nav>
+  </aside>
 
-            <!-- page header （︶^︶）-->
-             <div class="page-header">
-                <div class="breadcrumb">
-                <a href="dashboard.html">Dashboard</a>
-                <span>/</span>
-                <span class="current">Progress</span>
-             </div>
-             <h1>Your Learning Progress</h1>
-             <p>Track your achievements, milestones, and skill development across all courses.</p>
-            </div>
+  <!-- main -->
+  <main class="main-content" id="mainContent">
 
-            <!-- stats overview -->
-             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-top">
-                        <span class="stat-label">Overall Progress</span>
-                        <span class="stat-icon">◎</span>
-                    </div>
-                    <div class="stat-number" id="overallProgress">42%</div>
-                    <div class="stat-change up">+5% this month</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-top">
-                        <span class="stat-label">Courses Active</span>
-                        <span class="stat-icon">✎</span>
-                    </div>
-                    <div class="stat-number">5</div>
-                    <div class="stat-change">2 near completion</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-top">
-                        <span class="stat-label">Lessons Completed</span>
-                        <span class="stat-icon">✔</span>
-                    </div>
-                    <div class="stat-number">47</div>
-                    <div class="stat-change up">8+ this week</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-top">
-                        <span class="stat-label">Study Time</span>
-                        <span class="stat-icon">⏱</span>
-                    </div>
-                    <div class="stat-number">124h</div>
-                    <div class="stat-change up">+12h this week</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-top">
-                        <span class="stat-label">Achievements</span>
-                        <span class="stat-icon">🏆</span>
-                    </div>
-                    <div class="stat-number">12</div>
-                    <div class="stat-change up">+2 unlocked</div>
-                </div>
-             </div>
+    <div class="page-header">
+      <div class="breadcrumb">
+        <a href="dashboard.html">Dashboard</a>
+        <span>/</span>
+        <span class="current">Progress</span>
+      </div>
+      <h1>Your Learning Progress</h1>
+      <p>Track your achievements and skill development across all uploaded courses.</p>
+    </div>
 
-             <!-- content grid -->
-              <div class="content-grid">
+    <!-- stats overview -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Overall Progress</span>
+          <span class="stat-icon">◎</span>
+        </div>
+        <div class="stat-number" id="overallProgress">0%</div>
+        <div class="stat-change">Across all courses</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Total Courses</span>
+          <span class="stat-icon">✎</span>
+        </div>
+        <div class="stat-number" id="coursesTotalCount">0</div>
+        <div class="stat-change">Uploaded materials</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">In Progress</span>
+          <span class="stat-icon">⏳</span>
+        </div>
+        <div class="stat-number" id="coursesActiveCount">0</div>
+        <div class="stat-change">Active courses</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Completed</span>
+          <span class="stat-icon">✔</span>
+        </div>
+        <div class="stat-number" id="coursesCompletedCount">0</div>
+        <div class="stat-change up">Finished courses</div>
+      </div>
+    </div>
 
-                <!-- course program -->
-                 <div class="section-card">
-                  <div class="section-head">
-                    <h2>Course Progress</h2>
-                    <a href="course.html" class="section-link">View all courses →</a> <!-- no course yet -->
-                  </div>
-                  <div class="progress-list" id="courseProgressList">
-                    <div class="progress-item">
-                      <div class="progress-top">
-                        <div class="progress-info">
-                          <div class="progress-icon" style="background:linear-gradient(135deg,#1a1a2e,#27272a)">🏥</div>
-                          <div>
-                            <div class="progress-title">Health Policy :></div>
-                            <div class="progress-sub">12 of 20 lessons completed</div>
-                          </div>
-                        </div>
-                        <div class="progress-stats">
-                          <div class="progress-pct">60%</div>
-                          <div class="progress-meta">8 lessons remaining</div>
-                        </div>
-                      </div>
-                      <div class="progress-bar-wrap">
-                        <div class="progress-fill" style="width:60%; background:linear-gradient(90deg,#a1a1aa,#ffffff);"></div>
-                      </div>
-                    </div>
+    <!-- content grid -->
+    <div class="content-grid">
 
-                    <div class="progress-item">
-                      <div class="progress-top">
-                        <div class="progress-info">
-                          <div class="progress-icon" style="background:linear-gradient(135deg,#0a0a1a,#1a1a2e)">📐</div>
-                          <div>
-                            <div class="progress-title">Advanced Calculus</div>
-                            <div class="progress-sub">7 of 20 lessons completed</div>
-                          </div>
-                        </div>
-                        <div class="progress-stats">
-                          <div class="progress-pct">35%</div>
-                          <div class="progress-meta">13 lessons remaining</div>
-                        </div>
-                      </div>
-                      <div class="progress-bar-wrap">
-                        <div class="progress-fill" style="width:35%; background:linear-gradient(90deg,#71717a,#a1a1aa);"></div>
-                      </div>
-                    </div>
-
-                    <div class="progress-item">
-                      <div class="progress-top">
-                        <div class="progress-info">
-                          <div class="progress-icon" style="background:linear-gradient(135deg,#1a0a0a,#2e1a1a)">📖</div>
-                          <div>
-                            <div class="progress-title">English Literature</div>
-                            <div class="progress-sub">16 of 20 lessons completed</div>
-                          </div>
-                        </div>
-                        <div class="progress-stats">
-                          <div class="progress-pct">80%</div>
-                          <div class="progress-meta">4 lessons remaining</div>
-                        </div>
-                      </div>
-                      <div class="progress-bar-wrap">
-                        <div class="progress-fill" style="width:80%; background:linear-gradient(90deg,#d4d4d8,#ffffff);"></div>
-                      </div>
-                    </div>
-
-                    <div class="progress-item">
-                      <div class="progress-top">
-                        <div class="progress-info">
-                          <div class="progress-icon" style="background:linear-gradient(135deg,#0a1a0a,#1a2e1a)">🧬</div>
-                          <div>
-                            <div class="progress-title">Biology: Cell & Genetics</div>
-                            <div class="progress-sub">2 of 20 lessons completed</div>
-                          </div>
-                        </div>
-                        <div class="progress-stats">
-                          <div class="progress-pct">10%</div>
-                          <div class="progress-meta">18 lessons remaining</div>
-                        </div>
-                      </div>
-                      <div class="progress-bar-wrap">
-                        <div class="progress-fill" style="width:10%; background:linear-gradient(90deg,#3f3f46,#52525b);"></div>
-                      </div>
-                    </div>
-                  </div>
-                 </div>
-
-                 <!-- milestones (progress completed) -->
+      <!-- course progress list -->
       <div class="section-card">
         <div class="section-head">
-          <h2>Recent Milestones</h2>
+          <h2>Course Progress</h2>
+          <a href="mycourses.html" class="section-link">Upload more →</a>
         </div>
-        <div class="milestones-list">
-          <div class="milestone-item completed">
-            <div class="milestone-check">✓</div>
-            <div class="milestone-content">
-              <div class="milestone-title">First Week Streak</div>
-              <div class="milestone-desc">Study 7 days in a row</div>
-            </div>
-            <div class="milestone-date">Jan 15</div>
+        <div class="progress-list" id="courseProgressList">
+          <!-- rendered by progress.js -->
+          <div style="padding:24px;text-align:center;color:var(--text-muted);font-size:13px;">
+            Loading...
           </div>
-          <div class="milestone-item completed">
-            <div class="milestone-check">✓</div>
-            <div class="milestone-content">
-              <div class="milestone-title">Course Starter</div>
-              <div class="milestone-desc">Complete first lesson in 3 courses</div>
-            </div>
-            <div class="milestone-date">Jan 18</div>
-          </div>
-          <div class="milestone-item completed">
-            <div class="milestone-check">✓</div>
-            <div class="milestone-content">
-              <div class="milestone-title">Halfway Hero</div>
-              <div class="milestone-desc">Reach 50% in any course</div>
-            </div>
-            <div class="milestone-date">Jan 22</div>
-          </div>
-          <div class="milestone-item">
-            <div class="milestone-check">○</div>
-            <div class="milestone-content">
-              <div class="milestone-title">Master Scholar</div>
-              <div class="milestone-desc">Complete your first course</div>
-            </div>
-            <div class="milestone-date">In progress</div>
-          </div>
-          <div class="milestone-item">
-            <div class="milestone-check">○</div>
-            <div class="milestone-content">
-              <div class="milestone-title">Speed Learner</div>
-              <div class="milestone-desc">Complete 5 lessons in one day</div>
-            </div>
-            <div class="milestone-date">Locked</div>
-          </div>
+        </div>
+      </div>
+
+      <!-- milestones -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>Milestones</h2>
+        </div>
+        <div class="milestones-list" id="milestonesList">
+          <!-- rendered by progress.js -->
         </div>
       </div>
 
     </div>
 
-    <!-- bot grid -->
+    <!-- bottom grid -->
     <div class="bottom-grid">
 
-      <!-- weekly activity chart -->
+      <!-- weekly activity (static visual, decorative) -->
       <div class="section-card">
         <div class="section-head">
           <h2>Weekly Study Activity</h2>
@@ -317,91 +191,46 @@
         <div class="chart-container">
           <div class="chart-bars">
             <div class="chart-bar-group">
-              <div class="chart-bar" style="height: 45%;" data-value="2.5h"></div>
+              <div class="chart-bar" style="height:45%;" data-value="Mon"></div>
               <div class="chart-label">Mon</div>
             </div>
             <div class="chart-bar-group">
-              <div class="chart-bar" style="height: 65%;" data-value="4h"></div>
+              <div class="chart-bar" style="height:65%;" data-value="Tue"></div>
               <div class="chart-label">Tue</div>
             </div>
             <div class="chart-bar-group">
-              <div class="chart-bar" style="height: 30%;" data-value="1.5h"></div>
+              <div class="chart-bar" style="height:30%;" data-value="Wed"></div>
               <div class="chart-label">Wed</div>
             </div>
             <div class="chart-bar-group">
-              <div class="chart-bar" style="height: 80%;" data-value="5h"></div>
+              <div class="chart-bar" style="height:80%;" data-value="Thu"></div>
               <div class="chart-label">Thu</div>
             </div>
             <div class="chart-bar-group">
-              <div class="chart-bar" style="height: 55%;" data-value="3h"></div>
+              <div class="chart-bar" style="height:55%;" data-value="Fri"></div>
               <div class="chart-label">Fri</div>
             </div>
             <div class="chart-bar-group">
-              <div class="chart-bar" style="height: 90%;" data-value="6h"></div>
+              <div class="chart-bar" style="height:90%;" data-value="Sat"></div>
               <div class="chart-label">Sat</div>
             </div>
             <div class="chart-bar-group">
-              <div class="chart-bar" style="height: 40%;" data-value="2h"></div>
+              <div class="chart-bar" style="height:40%;" data-value="Sun"></div>
               <div class="chart-label">Sun</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- skills progress -->
+      <!-- skill rings — dynamic -->
       <div class="section-card">
         <div class="section-head">
           <h2>Skill Development</h2>
+          <span style="font-size:11px;color:var(--text-muted);">By category</span>
         </div>
-        <div class="skills-grid">
-          <div class="skill-card">
-            <div class="skill-ring">
-              <svg width="60" height="60" viewBox="0 0 60 60">
-                <circle class="skill-ring-bg" cx="30" cy="30" r="26"></circle>
-                <circle class="skill-ring-fill" cx="30" cy="30" r="26" 
-                  stroke-dasharray="163.36" stroke-dashoffset="32.67"></circle>
-              </svg>
-              <div class="skill-ring-text">80%</div>
-            </div>
-            <div class="skill-name">English</div>
-            <div class="skill-level">Advanced</div>
-          </div>
-          <div class="skill-card">
-            <div class="skill-ring">
-              <svg width="60" height="60" viewBox="0 0 60 60">
-                <circle class="skill-ring-bg" cx="30" cy="30" r="26"></circle>
-                <circle class="skill-ring-fill" cx="30" cy="30" r="26" 
-                  stroke-dasharray="163.36" stroke-dashoffset="65.34"></circle>
-              </svg>
-              <div class="skill-ring-text">60%</div>
-            </div>
-            <div class="skill-name">Health</div>
-            <div class="skill-level">Intermediate</div>
-          </div>
-          <div class="skill-card">
-            <div class="skill-ring">
-              <svg width="60" height="60" viewBox="0 0 60 60">
-                <circle class="skill-ring-bg" cx="30" cy="30" r="26"></circle>
-                <circle class="skill-ring-fill" cx="30" cy="30" r="26" 
-                  stroke-dasharray="163.36" stroke-dashoffset="106.18"></circle>
-              </svg>
-              <div class="skill-ring-text">35%</div>
-            </div>
-            <div class="skill-name">Mathematics</div>
-            <div class="skill-level">Beginner</div>
-          </div>
-          <div class="skill-card">
-            <div class="skill-ring">
-              <svg width="60" height="60" viewBox="0 0 60 60">
-                <circle class="skill-ring-bg" cx="30" cy="30" r="26"></circle>
-                <circle class="skill-ring-fill" cx="30" cy="30" r="26" 
-                  stroke-dasharray="163.36" stroke-dashoffset="147.02"></circle>
-              </svg>
-              <div class="skill-ring-text">10%</div>
-            </div>
-            <div class="skill-name">Science</div>
-            <div class="skill-level">Novice</div>
-          </div>
+        <div class="skills-grid" id="skillsGrid">
+          <!-- rendered by progress.js -->
+          <div style="padding:24px;text-align:center;color:var(--text-muted);font-size:13px;grid-column:1/-1;">Loading...</div>
         </div>
       </div>
 
@@ -409,7 +238,7 @@
 
   </main>
 </div>
- 
+
 <script src="progress.js"></script>
 </body>
 </html>
