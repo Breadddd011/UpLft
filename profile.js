@@ -1,7 +1,7 @@
 const { createClient } = supabase;
   const client = createClient(
     'https://tiyapgnehlwbhhzqqumq.supabase.co',
-    'sb_publishable_TshJnLexCo4FrHe_YJ8l7g_QcxA_kaV'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpeWFwZ25laGx3YmhoenFxdW1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzExMTYsImV4cCI6MjA4NzMwNzExNn0.Y4VgYUS6XDh_XYKPc1wi2TcFi3s5KKglo6ouNdriwRg'
   );
 
   let currentUser = null;
