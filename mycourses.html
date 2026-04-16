@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="../images/Uplogo.ico">
@@ -11,280 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="mycourses.css">
-
-  <style>
-    /* ── Built-in Modules Section ── */
-    .builtin-section {
-      margin-bottom: 36px;
-      animation: fadeInUp 0.5s ease both;
-    }
-
-    .builtin-section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-
-    .builtin-section-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .builtin-section-title {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--text-muted);
-    }
-
-    .builtin-badge {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 99px;
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-
-    .builtin-toggle-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 14px;
-      background: transparent;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .builtin-toggle-btn:hover {
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
-    }
-
-    .builtin-toggle-btn .chevron {
-      transition: transform 0.3s ease;
-      font-size: 10px;
-      display: inline-block;
-    }
-
-    .builtin-toggle-btn.collapsed .chevron {
-      transform: rotate(-90deg);
-    }
-
-    .builtin-divider {
-      height: 1px;
-      background: var(--border);
-      margin-bottom: 20px;
-    }
-
-    /* Collapsible wrapper */
-    .builtin-collapsible {
-      overflow: hidden;
-      transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
-      max-height: 2000px;
-      opacity: 1;
-    }
-
-    .builtin-collapsible.collapsed {
-      max-height: 0;
-      opacity: 0;
-    }
-
-    /* Strand tabs */
-    .strand-tabs {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    .strand-tab {
-      padding: 6px 14px;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 600;
-      border: 1px solid var(--border);
-      background: var(--bg-secondary);
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .strand-tab:hover {
-      border-color: var(--border-light);
-      color: var(--text-secondary);
-    }
-
-    .strand-tab.active {
-      background: var(--bg-tertiary);
-      border-color: var(--border-light);
-      color: var(--text-primary);
-    }
-
-    /* Built-in module grid */
-    .builtin-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px;
-    }
-
-    /* Built-in module card */
-    .builtin-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      cursor: pointer;
-      transition: var(--transition);
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .builtin-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--text-muted), var(--accent));
-      opacity: 0;
-      transition: opacity var(--transition);
-    }
-
-    .builtin-card:hover {
-      border-color: var(--border-light);
-      background: var(--bg-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .builtin-card:hover::before {
-      opacity: 1;
-    }
-
-    .builtin-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .builtin-card-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      flex-shrink: 0;
-      transition: var(--transition);
-    }
-
-    .builtin-card:hover .builtin-card-icon {
-      background: var(--bg-card);
-      border-color: var(--border-light);
-    }
-
-    .builtin-pdf-badge {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: rgba(239,68,68,0.12);
-      color: #ef4444;
-    }
-
-    .builtin-card-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.4;
-    }
-
-    .builtin-card-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .builtin-card-tag {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-    }
-
-    .builtin-card-open {
-      font-size: 10px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      transition: color var(--transition);
-    }
-
-    .builtin-card:hover .builtin-card-open {
-      color: var(--text-primary);
-    }
-
-    /* separator between built-in and user courses */
-    .user-section-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .user-section-title {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-
-    .user-section-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    @media (max-width: 768px) {
-      .builtin-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 10px;
-      }
-    }
-  </style>
-</head>
 <body>
-
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- Delete confirm -->
@@ -344,7 +70,7 @@
 
   <div class="nav-right">
     <div class="notification-wrapper">
-      <button class="notif-btn" id="notifBtn">🔔
+      <button class="notif-btn" id="notifBtn">🕭
         <span class="notif-badge" id="notifBadge"></span>
       </button>
       <div class="notif-dropdown" id="notifDropdown">
@@ -374,9 +100,6 @@
         </div>
         <div class="user-dropdown-divider"></div>
         <a href="profile.html" class="user-dropdown-item">☻ &nbsp;Profile</a>
-        <a href="#" class="user-dropdown-item">🌣 &nbsp;Settings</a>
-        <a href="#" class="user-dropdown-item">🛠 &nbsp;Help & Support</a>
-        <div class="user-dropdown-divider"></div>
         <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">➜] &nbsp;Logout</a>
       </div>
     </div>
@@ -396,12 +119,12 @@
       <div class="sidebar-divider"></div>
       <div class="sidebar-label">Learning</div>
 
-      <a href="mycourses.html" class="nav-item">
+      <a href="mycourses.html" class="nav-item active">
         <span class="nav-icon">✎</span>
         <span class="nav-text">My Courses</span>
       </a>
 
-      <a href="dashboard.html" class="nav-item">
+      <a href="deadline.html" class="nav-item">
         <span class="nav-icon">🕛</span>
         <span class="nav-text">Deadlines</span>
       </a>
@@ -441,9 +164,7 @@
       <p>Upload your notes, PDFs, or slides — and let AI turn them into reviewers, flashcards & quizzes.</p>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         BUILT-IN MODULES SECTION
-    ══════════════════════════════════════════ -->
+    <!-- BUILT-IN MODULES SECTION -->
     <div class="builtin-section">
 
       <div class="builtin-section-header">
@@ -463,10 +184,10 @@
       <div class="strand-tabs" id="strandTabs">
         <button class="strand-tab active" data-strand="all" onclick="setStrand('all')">All</button>
         <button class="strand-tab" data-strand="STEM" onclick="setStrand('STEM')">STEM</button>
-        <!-- Add more strands here as needed, e.g.:
         <button class="strand-tab" data-strand="ABM" onclick="setStrand('ABM')">ABM</button>
         <button class="strand-tab" data-strand="HUMSS" onclick="setStrand('HUMSS')">HUMSS</button>
-        -->
+        <button class="strand-tab" data-strand="GAS" onclick="setStrand('GAS')">GAS</button>
+        <button class="strand-tab" data-strand="TVL" onclick="setStrand('TVL')">TVL</button>
       </div>
 
       <!-- Collapsible grid -->
@@ -478,9 +199,7 @@
 
     </div>
 
-    <!-- ══════════════════════════════════════════
-         USER-UPLOADED COURSES
-    ══════════════════════════════════════════ -->
+    <!-- USER-UPLOADED COURSES (by strand) -->
     <div class="user-section-header">
       <span class="user-section-title">My Uploads</span>
       <div class="user-section-line"></div>
@@ -498,10 +217,9 @@
       </div>
     </div>
 
-    <!-- courses grid -->
-    <div class="courses-grid" id="coursesGrid"></div>
-    <!-- courses list -->
-    <div class="courses-list" id="coursesList"></div>
+    <!-- User courses organized by strand folders -->
+    <div id="userCoursesContainer">
+    </div>
 
     <!-- Upload Modal -->
     <div class="modal" id="uploadModal">
@@ -513,19 +231,27 @@
         <div class="modal-body">
           <form id="uploadForm">
             <div class="form-group">
-              <label for="courseName">Course / Subject Name *</label>
+              <label for="courseName">Course / Subject Name </label>
               <input type="text" id="courseName" placeholder="e.g., Discrete Mathematics" required>
             </div>
             <div class="form-group">
-              <label for="courseCategory">Category *</label>
-              <input type="text" id="courseCategory" placeholder="e.g., Computer Science" required>
+              <label for="courseCategory">Strand / Track </label>
+              <select id="courseCategory" required style="width:100%;padding:10px 12px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:13px;color:var(--text-primary);">
+                <option value="">Select a strand...</option>
+                <option value="STEM">STEM (Science, Technology, Engineering, Math)</option>
+                <option value="ABM">ABM (Accountancy, Business, Management)</option>
+                <option value="HUMSS">HUMSS (Humanities, Social Sciences)</option>
+                <option value="GAS">GAS (General Academic Strand)</option>
+                <option value="TVL">TVL (Technical-Vocational-Livelihood)</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="courseDesc">Description (optional)</label>
               <textarea id="courseDesc" placeholder="Brief description..." rows="2"></textarea>
             </div>
             <div class="form-group">
-              <label for="courseFile">Upload File *</label>
+              <label for="courseFile">Upload File </label>
               <div class="file-input-wrapper">
                 <input type="file" id="courseFile" accept=".pdf,.ppt,.pptx,.doc,.docx,.txt,.md" required>
                 <label for="courseFile" class="file-input-label">
@@ -556,6 +282,9 @@
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- PDF.js for text extraction -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="mycourses.js"></script>
 </body>
 </html>
