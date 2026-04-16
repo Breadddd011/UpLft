@@ -19,11 +19,10 @@ let pendingDeleteId = null;
 
 /* Strand configuration */
 const STRANDS = {
-const STRANDS = {
   'STEM': { name: 'STEM', icon: '🔬', color: '#3b82f6', desc: 'Science, Technology, Engineering, Math' },
   'ABM': { name: 'ABM', icon: '💼', color: '#f59e0b', desc: 'Accountancy, Business, Management' },
   'HUMSS': { name: 'HUMSS', icon: '📚', color: '#a855f7', desc: 'Humanities, Social Sciences' },
-  'ICT': { name: 'ICT', icon: '⚙️', color: '#c7c7c7', desc: 'Information and Communication Technology' },
+  'ICT': { name: 'ICT', icon: '🔧', color: '#c7c7c7', desc: 'Information and Communication Technology' },
   'Other': { name: 'Other', icon: '📁', color: '#71717a', desc: 'Uncategorized' }
 };
 
@@ -40,13 +39,13 @@ const BUILTIN_MODULES = [
   { title: "General Physics 2", meta: "PDF · 1.86 MB", tag: "Lecture", strand: "STEM", pdf: "../PDFs/STEM/STEM_General_Physics_2.pdf" },
   { title: "Pre-Calculus 1", meta: "PDF · 1.87 MB", tag: "Lecture", strand: "STEM", pdf: "../PDFs/STEM/STEM_Pre-Calculus_1.pdf" },
   { title: "Pre-Calculus 2", meta: "PDF · 1.54 MB", tag: "Lecture", strand: "STEM", pdf: "../PDFs/STEM/STEM_Pre-Calculus_2.pdf" },
-  { title: "Java Programming 1", meta: "PDF · 1.11 MB", tag: "Lecture", strand: "TVL", pdf: "../PDFs/ICT/ICT_Java1.pdf" },
-  { title: "Java Programming 2", meta: "PDF · 1.11 MB", tag: "Lecture", strand: "TVL", pdf: "../PDFs/ICT/ICT_Java2.pdf" },
-  { title: "Animation", meta: "PDF · 1.23 MB", tag: "Lecture", strand: "TVL", pdf: "../PDFs/ICT/ICT_Animation.pdf" },
-  { title: "Computer Programming 1", meta: "PDF · 1.45 MB", tag: "Lecture", strand: "TVL", pdf: "../PDFs/ICT/ICT_ComProg1.pdf" },
-  { title: "Computer Programming 2", meta: "PDF · 1.45 MB", tag: "Lecture", strand: "TVL", pdf: "../PDFs/ICT/ICT_ComProg2.pdf" },
-  { title: "Oracle Database 1", meta: "PDF · 2.12 MB", tag: "Lecture", strand: "TVL", pdf: "../PDFs/ICT/ICT_Oracle_DB1.pdf" },
-  { title: "Oracle Database 2", meta: "PDF · 2.12 MB", tag: "Lecture", strand: "TVL", pdf: "../PDFs/ICT/ICT_Oracle_DB2.pdf" }
+  { title: "Java Programming 1", meta: "PDF · 1.11 MB", tag: "Lecture", strand: "ICT", pdf: "../PDFs/ICT/ICT_Java1.pdf" },
+  { title: "Java Programming 2", meta: "PDF · 1.11 MB", tag: "Lecture", strand: "ICT", pdf: "../PDFs/ICT/ICT_Java2.pdf" },
+  { title: "Animation", meta: "PDF · 1.23 MB", tag: "Lecture", strand: "ICT", pdf: "../PDFs/ICT/ICT_Animation.pdf" },
+  { title: "Computer Programming 1", meta: "PDF · 1.45 MB", tag: "Lecture", strand: "ICT", pdf: "../PDFs/ICT/ICT_ComProg1.pdf" },
+  { title: "Computer Programming 2", meta: "PDF · 1.45 MB", tag: "Lecture", strand: "ICT", pdf: "../PDFs/ICT/ICT_ComProg2.pdf" },
+  { title: "Oracle Database 1", meta: "PDF · 2.12 MB", tag: "Lecture", strand: "ICT", pdf: "../PDFs/ICT/ICT_Oracle_DB1.pdf" },
+  { title: "Oracle Database 2", meta: "PDF · 2.12 MB", tag: "Lecture", strand: "ICT", pdf: "../PDFs/ICT/ICT_Oracle_DB2.pdf" }
 ];
 
 let builtinOpen = true;
