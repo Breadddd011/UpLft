@@ -37,11 +37,23 @@
       --nav-h: 60px;
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+    }
+
+    html { 
+      scroll-behavior:smooth; 
+    }
+
+    .noto-emoji {
+      font-family: "Noto Emoji", sans-serif;
+      font-weight: 400; 
+    }
 
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Inter', -apple-system, "Noto Emoji", sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
       line-height: 1.6;
@@ -50,7 +62,9 @@
       min-height: 100vh;
     }
 
-    ::selection { background: rgba(255,255,255,0.15); }
+    ::selection { 
+      background: rgba(255,255,255,0.15); 
+    }
 
     /* ── Top Nav ── */
     .top-nav {
@@ -68,7 +82,11 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .nav-left { display:flex; align-items:center; gap:16px; }
+    .nav-left { 
+      display:flex; 
+      align-items:center; 
+      gap:16px; 
+    }
 
     .menu-toggle {
       background: none;
