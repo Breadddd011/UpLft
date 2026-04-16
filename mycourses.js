@@ -23,7 +23,7 @@ const STRANDS = {
   'STEM': { name: 'STEM', icon: '🔬', color: '#3b82f6', desc: 'Science, Technology, Engineering, Math' },
   'ABM': { name: 'ABM', icon: '💼', color: '#f59e0b', desc: 'Accountancy, Business, Management' },
   'HUMSS': { name: 'HUMSS', icon: '📚', color: '#a855f7', desc: 'Humanities, Social Sciences' },
-  'ICT': { name: 'ICT', icon: '🔧', color: '#c7c7c7', desc: 'Information and Communication Technology' },
+  'ICT': { name: 'ICT', icon: '⚙️', color: '#c7c7c7', desc: 'Information and Communication Technology' },
   'Other': { name: 'Other', icon: '📁', color: '#71717a', desc: 'Uncategorized' }
 };
 
