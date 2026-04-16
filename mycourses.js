@@ -19,11 +19,11 @@ let pendingDeleteId = null;
 
 /* Strand configuration */
 const STRANDS = {
+const STRANDS = {
   'STEM': { name: 'STEM', icon: '🔬', color: '#3b82f6', desc: 'Science, Technology, Engineering, Math' },
   'ABM': { name: 'ABM', icon: '💼', color: '#f59e0b', desc: 'Accountancy, Business, Management' },
   'HUMSS': { name: 'HUMSS', icon: '📚', color: '#a855f7', desc: 'Humanities, Social Sciences' },
-  'GAS': { name: 'GAS', icon: '📖', color: '#22c55e', desc: 'General Academic Strand' },
-  'TVL': { name: 'TVL', icon: '🔧', color: '#ef4444', desc: 'Technical-Vocational-Livelihood' },
+  'ICT': { name: 'ICT', icon: '🔧', color: '#c7c7c7', desc: 'Information and Communication Technology' },
   'Other': { name: 'Other', icon: '📁', color: '#71717a', desc: 'Uncategorized' }
 };
 
