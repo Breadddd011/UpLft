@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- PDF.js for text extraction -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +26,7 @@
 
     <div class="notification-wrapper">
       <button class="notif-btn" id="notifBtn">
-        🔔
+        🕭
         <span class="notif-badge" id="notifBadge"></span>
       </button>
       <div class="notif-dropdown" id="notifDropdown">
@@ -57,9 +56,6 @@
         </div>
         <div class="user-dropdown-divider"></div>
         <a href="profile.html" class="user-dropdown-item">☻ &nbsp;Profile</a>
-        <a href="#" class="user-dropdown-item">🌣 &nbsp;Settings</a>
-        <a href="#" class="user-dropdown-item">🛠 &nbsp;Help & Support</a>
-        <div class="user-dropdown-divider"></div>
         <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">➜] &nbsp;Logout</a>
       </div>
     </div>
