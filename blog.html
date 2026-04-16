@@ -4,11 +4,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="Uplogo.ico">
+  <link rel="icon" type="image/png" href="../images/Uplogo.ico">
   <title>Blog & Resources — UpLift</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="blog.css">
 </head>
 <body>
@@ -60,7 +61,7 @@
   </div>
   <div class="nav-right">
     <div class="notification-wrapper">
-      <button class="notif-btn" id="notifBtn">🔔
+      <button class="notif-btn" id="notifBtn">🕭
         <span class="notif-badge" id="notifBadge"></span>
       </button>
       <div class="notif-dropdown" id="notifDropdown">
@@ -90,9 +91,6 @@
         </div>
         <div class="user-dropdown-divider"></div>
         <a href="profile.html" class="user-dropdown-item">☻ &nbsp;Profile</a>
-        <a href="#" class="user-dropdown-item">🌣 &nbsp;Settings</a>
-        <a href="#" class="user-dropdown-item">🛠 &nbsp;Help & Support</a>
-        <div class="user-dropdown-divider"></div>
         <a href="#" class="user-dropdown-item danger" onclick="handleLogout(event)">➜] &nbsp;Logout</a>
       </div>
     </div>
@@ -107,33 +105,42 @@
     <nav class="sidebar-nav">
       <div class="sidebar-label">Main</div>
       <a href="dashboard.html" class="nav-item">
-        <span class="nav-icon">⌂</span><span class="nav-text">Home</span>
-      </a>
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-label">Learning</div>
-      <a href="mycourses.html" class="nav-item">
-        <span class="nav-icon">✎</span><span class="nav-text">My Courses</span>
-      </a>
-      <a href="dashboard.html" class="nav-item">
-        <span class="nav-icon">⏱</span><span class="nav-text">Deadlines</span>
-      </a>
-      <a href="progress.html" class="nav-item">
-        <span class="nav-icon">◎</span><span class="nav-text">Progress</span>
-      </a>
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-label">Content</div>
-      <a href="blog.html" class="nav-item active">
-        <span class="nav-icon">✍︎</span><span class="nav-text">Blogs</span>
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">Home</span>
       </a>
 
       <div class="sidebar-divider"></div>
-      <div class="sidebar-label">Social</div>
-        <a href="social.html" class="nav-item">
-        <span class="nav-icon">🗪</span>
-        <span class="nav-text">Community</span>
+      <div class="sidebar-label">Learning</div>
+      <a href="mycourses.html" class="nav-item">
+        <span class="nav-icon">✎</span>
+        <span class="nav-text">My Courses</span>
+      </a>
+
+      <a href="deadline.html" class="nav-item">
+        <span class="nav-icon">🕛</span>
+        <span class="nav-text">Deadlines</span>
+      </a>
+
+      <a href="progress.html" class="nav-item">
+        <span class="nav-icon">📊</span>
+        <span class="nav-text">Progress</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Content</div>
+
+      <a href="blog.html" class="nav-item active">
+        <span class="nav-icon">✍🏻</span>
+        <span class="nav-text">Blogs</span>
       </a>
       
       <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Social</div>
+        <a href="social.html" class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span class="nav-text">Community</span>
+      </a>
+
     </nav>
   </aside>
 
